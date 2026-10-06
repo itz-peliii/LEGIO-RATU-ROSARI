@@ -1,0 +1,229 @@
+/* =========================================================
+   BUBBLE THEME — Legio Maria "Ratu Rosari"
+   Palet warna diambil dari kartu Pantone pada gambar referensi:
+   - Corsair        (19-4329 TCX) #244F62  -> --lm-deep
+   - Tumultuous Sea (18-4333 TSX) #2C6C82  -> --lm-sea
+   - Blue Turquoise (15-5217 TCX) #4FA79A  -> --lm-turquoise
+   - Angel Blue     (14-4814 TCX) #A8D6D9  -> --lm-angel
+   - Mary's Rose    (12-1813 TCX) #F4CBC8  -> --lm-blush
+   ========================================================= */
+
+:root {
+  --lm-deep: #244F62;
+  --lm-sea: #2C6C82;
+  --lm-turquoise: #4FA79A;
+  --lm-angel: #A8D6D9;
+  --lm-blush: #F4CBC8;
+  --lm-foam: #F6FBFB;
+  --lm-ink: #17323D;
+  --lm-radius: 22px;
+  --lm-radius-lg: 32px;
+  --lm-shadow: 0 10px 30px -12px rgba(36, 79, 98, 0.28);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Nunito Sans', -apple-system, sans-serif;
+  color: var(--lm-ink);
+  background: var(--lm-foam);
+}
+
+h1, h2, h3, h4, .brand {
+  font-family: 'Baloo 2', 'Nunito Sans', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ---------- Layout shell ---------- */
+.lm-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ---------- Sidebar: bubble nav ---------- */
+.lm-sidebar {
+  width: 250px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, var(--lm-deep) 0%, var(--lm-sea) 100%);
+  color: #eaf6f7;
+  padding: 28px 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* decorative floating bubbles */
+.lm-sidebar::before, .lm-sidebar::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+}
+.lm-sidebar::before { width: 180px; height: 180px; top: -60px; right: -70px; }
+.lm-sidebar::after { width: 120px; height: 120px; bottom: 60px; left: -50px; background: rgba(79,167,154,0.25); }
+
+.lm-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 30px;
+  position: relative;
+  z-index: 1;
+}
+.lm-brand .bubble-dot {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--lm-blush);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+}
+.lm-brand span.title { font-size: 17px; line-height: 1.2; }
+.lm-brand span.sub { display:block; font-size: 11px; font-weight: 400; opacity: .75; }
+
+.lm-nav { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 6px; }
+.lm-nav a {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #dff2f2;
+  transition: background .15s ease, transform .15s ease;
+}
+.lm-nav a:hover { background: rgba(255,255,255,0.10); }
+.lm-nav a.active { background: var(--lm-turquoise); color: #fff; box-shadow: var(--lm-shadow); }
+.lm-nav .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; opacity: .6; }
+
+/* ---------- Main area ---------- */
+.lm-main { flex: 1; padding: 30px 38px 60px; }
+
+.lm-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 26px;
+}
+.lm-topbar h1 { margin: 0; font-size: 24px; color: var(--lm-deep); }
+.lm-topbar p { margin: 2px 0 0; color: #5b7c86; font-size: 14px; }
+
+/* ---------- Hero wave banner (dashboard) ---------- */
+.lm-hero {
+  border-radius: var(--lm-radius-lg);
+  padding: 28px 32px;
+  margin-bottom: 26px;
+  background: linear-gradient(120deg, var(--lm-blush) 0%, var(--lm-angel) 45%, var(--lm-turquoise) 100%);
+  position: relative;
+  overflow: hidden;
+  color: var(--lm-deep);
+}
+.lm-hero::after {
+  content: "";
+  position: absolute; right: -30px; bottom: -60px;
+  width: 220px; height: 220px; border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+}
+.lm-hero h2 { margin: 0 0 6px; font-size: 22px; }
+.lm-hero p { margin: 0; max-width: 520px; font-size: 14px; position: relative; z-index: 1; }
+
+/* ---------- Bubble stat cards ---------- */
+.lm-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 18px; margin-bottom: 28px; }
+.lm-stat-card {
+  background: #fff;
+  border-radius: var(--lm-radius);
+  padding: 20px 22px;
+  box-shadow: var(--lm-shadow);
+  position: relative;
+}
+.lm-stat-card .icon-bubble {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; margin-bottom: 12px; color: #fff;
+}
+.lm-stat-card .value { font-size: 26px; font-weight: 700; color: var(--lm-deep); }
+.lm-stat-card .label { font-size: 13px; color: #6b8791; }
+.bg-sea { background: var(--lm-sea); }
+.bg-turquoise { background: var(--lm-turquoise); }
+.bg-blush { background: #e79a97; }
+.bg-deep { background: var(--lm-deep); }
+
+/* ---------- Cards / panels ---------- */
+.lm-card {
+  background: #fff;
+  border-radius: var(--lm-radius);
+  padding: 22px 24px;
+  box-shadow: var(--lm-shadow);
+  margin-bottom: 22px;
+}
+.lm-card h3 { margin: 0 0 14px; font-size: 16px; color: var(--lm-deep); }
+
+/* ---------- Buttons (pill / bubble) ---------- */
+.lm-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: none;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.lm-btn:hover { transform: translateY(-1px); }
+.lm-btn-primary { background: var(--lm-turquoise); color: #fff; box-shadow: 0 8px 18px -8px rgba(79,167,154,.6); }
+.lm-btn-secondary { background: var(--lm-angel); color: var(--lm-deep); }
+.lm-btn-danger { background: #f1d4d2; color: #9c3b34; }
+.lm-btn-ghost { background: transparent; color: var(--lm-sea); border: 2px solid var(--lm-angel); }
+
+/* ---------- Forms ---------- */
+.lm-field { margin-bottom: 16px; }
+.lm-field label { display: block; font-size: 13px; font-weight: 700; color: var(--lm-sea); margin-bottom: 6px; }
+.lm-field input, .lm-field select, .lm-field textarea {
+  width: 100%;
+  padding: 11px 16px;
+  border-radius: 16px;
+  border: 2px solid #e0eff0;
+  font-family: inherit;
+  font-size: 14px;
+  background: #fbfefe;
+}
+.lm-field input:focus, .lm-field select:focus, .lm-field textarea:focus {
+  outline: none; border-color: var(--lm-turquoise);
+}
+.lm-error { color: #b6453c; font-size: 12.5px; margin-top: 4px; }
+
+/* ---------- Table ---------- */
+.lm-table { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
+.lm-table th { text-align: left; font-size: 12.5px; text-transform: none; color: #6b8791; padding: 0 16px; font-weight: 700; }
+.lm-table td { background: #fff; padding: 14px 16px; font-size: 14px; }
+.lm-table tr td:first-child { border-radius: 14px 0 0 14px; }
+.lm-table tr td:last-child { border-radius: 0 14px 14px 0; }
+.lm-table tbody tr { box-shadow: var(--lm-shadow); }
+
+/* ---------- Badges (pill) ---------- */
+.lm-badge { display: inline-block; padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+.badge-hadir, .badge-aktif, .badge-masuk, .badge-selesai { background: #dcf3e9; color: #1f7a56; }
+.badge-izin, .badge-dijadwalkan, .badge-terjadwal { background: #fdeecb; color: #a4700a; }
+.badge-absen, .badge-tidak_aktif, .badge-keluar, .badge-batal { background: #fbdcd9; color: #b6453c; }
+.badge-diajukan { background: var(--lm-angel); color: var(--lm-deep); }
+
+/* ---------- Alerts ---------- */
+.lm-alert { padding: 14px 20px; border-radius: 16px; margin-bottom: 18px; font-size: 14px; font-weight: 600; }
+.lm-alert-success { background: #dcf3e9; color: #1f7a56; }
+.lm-alert-error { background: #fbdcd9; color: #b6453c; }
+
+/* ---------- Auth (login) bubble screen ---------- */
+.lm-auth-wrap {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(160deg, var(--lm-blush) 0%, var(--lm-angel) 45%, var(--lm-sea) 100%);
+  position: relative;
+  overflow: hidden;
+}
+.lm-auth-wrap .floatie { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.25); animation: lm-float 7s ease-in-out infinite; }
+.lm-auth-card { width: 380px; background: #fff; border-radius: var(--lm-radius-lg); padding: 34px; box-shadow: 0 30px 60px -20px rgba(23,50,61,0.4); position: relative; z-index: 1; }
+
+@keyframes lm-float { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-16px);} }
+
+@media (max-width: 860px) {
+  .lm-sidebar { display: none; }
+  .lm-main { padding: 20px; }
+}
