@@ -14,15 +14,13 @@
 
     <!-- TOP NAVBAR -->
     <nav x-data="{ open: false }" class="bg-white/90 backdrop-blur-md border-b border-slate-200 fixed w-full top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
             <div class="flex justify-between h-20 items-center">
                 
                 <!-- Logo / Brand -->
                 <a href="#hero" class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-bold text-xl shadow-md">
-                        G
-                    </div>
-                    <span class="font-bold text-xl text-slate-900 tracking-tight">Gereja Website</span>
+                    <img src="{{ asset('assets/images/logo.jpg') }}" alt="Santo Petrus Logo" class="w-10 h-10 rounded-full object-cover shadow-sm">
+                    <span class="font-bold text-lg md:text-xl text-slate-900 tracking-tight">Paroki Santo Petrus Tuban</span>
                 </a>
 
                 <!-- Desktop Navigation Links -->
@@ -45,17 +43,17 @@
             </div>
         </div>
 
-        <!-- Mobile Dropdown Menu (Top-Down Animation) -->
+        <!-- Mobile Dropdown Menu -->
         <div x-show="open" 
-             x-transition:enter="transition ease-out duration-200"
-             x-transition:enter-start="opacity-0 -translate-y-4"
-             x-transition:enter-end="opacity-100 translate-y-0"
-             x-transition:leave="transition ease-in duration-150"
-             x-transition:leave-start="opacity-100 translate-y-0"
-             x-transition:leave-end="opacity-0 -translate-y-4"
-             x-cloak
-             @click.away="open = false" 
-             class="md:hidden bg-white border-b border-slate-200 shadow-xl px-4 pt-2 pb-6 space-y-3">
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 -translate-y-4"
+            x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100 translate-y-0"
+            x-transition:leave-end="opacity-0 -translate-y-4"
+            x-cloak
+            @click.away="open = false" 
+            class="md:hidden bg-white border-b border-slate-200 shadow-xl px-4 pt-2 pb-6 space-y-3">
             
             <a @click="open = false" href="#hero" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 transition">Beranda</a>
             <a @click="open = false" href="#about" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 transition">Tentang Kami</a>
@@ -74,7 +72,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                 <div>
-                    <h3 class="text-white text-lg font-bold mb-3">Gereja Website</h3>
+                    <h3 class="text-white text-lg font-bold mb-3">Paroki Santo Petrus Tuban</h3>
                     <p class="text-sm leading-relaxed text-slate-400">
                         Wadah pelayanan dan komunitas umat dalam bertumbuh bersama.
                     </p>
@@ -90,9 +88,9 @@
                 <div>
                     <h4 class="text-white font-semibold mb-3">Kontak</h4>
                     <p class="text-sm text-slate-400">
-                        {{ $settings['address'] ?? 'Jl. Gereja No. 123' }}<br>
-                        Email: {{ $settings['email'] ?? 'info@gereja.com' }}<br>
-                        Telepon: {{ $settings['phone'] ?? '+62 812-3456-7890' }}
+                        {{ $settings['address'] ?? 'Jl. Panglima Sudirman 159,Kel. Sidomulyo RT. 02 / RW. 03 Kec. Tuban - 62312' }}<br>
+                        Email: {{ $settings['email'] ?? 'parokistpetrustuban@gmail.com' }}<br>
+                        Telepon: {{ $settings['phone'] ?? '085231835270' }}
                     </p>
                 </div>
             </div>

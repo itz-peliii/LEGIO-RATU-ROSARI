@@ -30,23 +30,46 @@
         </div>
         
         <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-8 sm:p-12 shadow-sm prose prose-slate max-w-none text-slate-600 text-lg leading-relaxed">
-            {!! $settings['about_us'] ?? '<p class="text-center text-slate-400">Konten tentang kami belum diisi oleh admin.</p>' !!}
+            {!! $settings['about_us'] ?? '<p class="text-center text-slate-400">Gereja Katolik Paroki Santo Petrus Tuban merupakan bagian dari Keuskupan Surabaya yang berdedikasi menjadi wadah pertumbuhan rohani, persaudaraan, dan pelayanan kasih bagi seluruh umat Katolik di wilayah Tuban dan sekitarnya. Melalui berbagai kegiatan liturgi, pembinaan iman, serta pelayanan sosial komunitas seperti Legio Maria Presidium "Ratu Rosari", kami terus berkomitmen menyebarkan nilai-nilai Injil dan menghadirkan kepedulian nyata bagi sesama.</p>' !!}
         </div>
     </div>
 </section>
 
-<!-- 3. VISI & MISI SECTION (at least 1 screen height) -->
+<!-- 3. VISI & MISI SECTION -->
 <section id="vision-mission" class="min-h-screen flex items-center bg-slate-50 py-20 border-b border-slate-200">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div class="text-center max-w-3xl mx-auto space-y-4 mb-12">
-            <span class="text-indigo-600 font-semibold text-sm tracking-wider uppercase">Arah & Tujuan</span>
+            <span class="text-indigo-600 font-semibold text-sm tracking-wider uppercase">Arah & Semangat Pelayanan</span>
             <h2 class="text-3xl sm:text-4xl font-bold text-slate-900">Visi & Misi</h2>
             <div class="w-16 h-1 bg-indigo-600 mx-auto rounded-full"></div>
         </div>
 
-        <div class="bg-white border border-slate-200 rounded-2xl p-8 sm:p-12 shadow-sm prose prose-slate max-w-none text-slate-700 leading-relaxed">
-            {!! $settings['visi_misi'] ?? '<p class="text-center text-slate-400">Visi & Misi belum diisi oleh admin.</p>' !!}
-        </div>
+        @if(isset($settings['visi_misi']) && !empty($settings['visi_misi']))
+            <div class="bg-white border border-slate-200 rounded-2xl p-8 sm:p-12 shadow-sm prose prose-slate max-w-none text-slate-700 leading-relaxed">
+                {!! $settings['visi_misi'] !!}
+            </div>
+        @else
+            <!-- Fallback Tampilan Default Jika Database Belum Diisi Admin -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- VISI -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm hover:shadow-md transition">
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">Visi Komunitas</h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        Menjadi wadah pelayanan awam Katolik yang setia, berbelaskasih, dan tangguh dalam mengamalkan kasih Kristus melalui teladan kerendahan hati dan kesetiaan BUNDA MARIA di Paroki Santo Petrus Tuban.
+                    </p>
+                </div>
+
+                <!-- MISI -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm hover:shadow-md transition">
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">Misi Pelayanan</h3>
+                    <ul class="space-y-3 text-slate-600 list-disc list-inside leading-relaxed">
+                        <li>Memperdalam spiritualitas anggota melalui doa bersama dan perjumpaan rutin mingguan.</li>
+                        <li>Melaksanakan perlawatan kasih kepada Umat Katolik yang sakit, lansia, dan membutuhkan penguatan rohani.</li>
+                        <li>Mewujudkan tata kelola komunitas yang tertib, transparan, dan terkoordinasi secara digital.</li>
+                    </ul>
+                </div>
+            </div>
+        @endif
     </div>
 </section>
 
