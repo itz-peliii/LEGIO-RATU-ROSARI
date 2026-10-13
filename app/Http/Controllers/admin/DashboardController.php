@@ -24,10 +24,15 @@ class DashboardController extends Controller
     public function updateSettings(Request $request)
     {
         $data = $request->validate([
-            'hero_title'       => 'nullable|string',
-            'hero_subtitle'    => 'nullable|string',
-            'visi_misi'        => 'nullable|string',
-            'doc_description'  => 'nullable|string',
+            'hero_title'      => 'nullable|string',
+            'hero_subtitle'   => 'nullable|string',
+            'about_us'        => 'nullable|string',
+            'visi_misi'       => 'nullable|string',
+            'doc_description' => 'nullable|string',
+            'schedule_note'   => 'nullable|string',
+            'phone'           => 'nullable|string',
+            'email'           => 'nullable|email',
+            'address'         => 'nullable|string',
         ]);
 
         foreach ($data as $key => $value) {
