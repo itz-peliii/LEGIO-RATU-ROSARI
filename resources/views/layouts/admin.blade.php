@@ -6,7 +6,7 @@
     <title>Admin Dashboard - Website Gereja</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
-    <!-- Trix Editor CDN (Bisa disesuaikan dengan Quill / Summernote / TinyMCE) -->
+    <!-- Trix Editor CDN -->
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
     <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
     <style>
@@ -22,23 +22,51 @@
                 <h1 class="text-xl font-bold tracking-wide">CMS Gereja</h1>
                 <p class="text-xs text-slate-400 mt-1">Panel Administrasi</p>
             </div>
-            <nav class="mt-6 px-4">
+            
+            <nav class="mt-6 px-4 space-y-2">
+                <!-- Menu 1: Edit Website -->
                 <a href="{{ route('admin.dashboard') }}" 
-                   class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition bg-indigo-600 text-white shadow-md">
+                   class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition {{ request()->routeIs('admin.dashboard') ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                               d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                     </svg>
                     Edit Website
                 </a>
+
+                <!-- Menu 2: Lihat Website (Preview) -->
+                <a href="{{ route('admin.preview') }}" 
+                   class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition {{ request()->routeIs('admin.preview') ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
+                    Lihat Website
+                </a>
             </nav>
         </aside>
 
         <!-- MAIN CONTENT AREA -->
-        <main class="flex-1 flex flex-col overflow-y-auto">
+        <main class="flex-1 flex flex-col h-screen overflow-hidden">
             <!-- Top Navbar Header -->
-            <header class="bg-white border-b border-gray-200 px-8 py-4 flex justify-between items-center">
-                <h2 class="text-lg font-semibold text-gray-800">Edit Konten Website</h2>
+            <header class="bg-white border-b border-gray-200 px-8 py-4 flex justify-between items-center flex-shrink-0">
+                <div class="flex items-center gap-4">
+                    <h2 class="text-lg font-semibold text-gray-800">
+                        {{ request()->routeIs('admin.preview') ? 'Preview Website' : 'Edit Konten Website' }}
+                    </h2>
+                    
+                    <!-- Tombol Buka Website Publik di Tab Baru -->
+                    <a href="{{ route('home') }}" target="_blank" 
+                       class="inline-flex items-center gap-1.5 text-xs text-indigo-600 hover:text-indigo-800 font-medium bg-indigo-50 px-3 py-1.5 rounded-lg border border-indigo-100 transition">
+                        <span>Buka Website Utama</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                        </svg>
+                    </a>
+                </div>
+
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="text-sm font-medium text-red-600 hover:text-red-800 transition">
@@ -47,10 +75,10 @@
                 </form>
             </header>
 
-            <!-- Main Workspace -->
-            <div class="p-8 space-y-8">
+            <!-- Main Workspace Area -->
+            <div class="flex-1 overflow-y-auto p-8">
                 @if(session('success'))
-                    <div class="p-4 bg-emerald-100 border-l-4 border-emerald-500 text-emerald-800 rounded shadow-sm text-sm">
+                    <div class="mb-6 p-4 bg-emerald-100 border-l-4 border-emerald-500 text-emerald-800 rounded shadow-sm text-sm">
                         {{ session('success') }}
                     </div>
                 @endif

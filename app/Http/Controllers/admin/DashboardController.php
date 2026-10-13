@@ -41,4 +41,9 @@ class DashboardController extends Controller
 
         return redirect()->back()->with('success', 'Konten website berhasil diperbarui!');
     }
+
+    public function preview()
+    {
+        return view('admin.preview');
+    }
 }

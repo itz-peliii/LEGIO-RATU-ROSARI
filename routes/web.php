@@ -13,9 +13,12 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth'])->prefix('admin')->as('admin.')->group(function () {
-    // Halaman Edit Website (Dashboard Utama)
+    // Dashboard Admin (Edit Konten)
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::put('/settings', [DashboardController::class, 'updateSettings'])->name('settings.update');
+
+    // Halaman Live Preview Website
+    Route::get('/preview', [DashboardController::class, 'preview'])->name('preview');
 
     // Action Documentation
     Route::post('/documentations', [DocumentationController::class, 'store'])->name('documentations.store');
