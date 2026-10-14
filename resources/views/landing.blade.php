@@ -3,14 +3,24 @@
 @section('content')
 
 @php
-    // Hero slide: Menggabungkan gambar hero default dengan foto-foto dokumentasi terbaru yang diunggah admin
-    $heroSlides = collect([['src' => asset('assets/images/hero.jpg'), 'title' => null]]);
-    foreach ($documentations->take(4) as $d) {
-        $heroSlides->push(['src' => asset('storage/' . $d->image_path), 'title' => $d->title]);
+    // Ambil foto dari database. Jika database masih kosong, baru pakai foto hero default dari assets.
+    if ($documentations->isNotEmpty()) {
+        $heroSlides = $documentations->map(function ($d) {
+            return [
+                'src'   => asset('storage/' . $d->image_path),
+                'title' => $d->title
+            ];
+        });
+    } else {
+        $heroSlides = collect([
+            ['src' => asset('assets/images/hero.jpg'), 'title' => null]
+        ]);
     }
-    $aboutImage = $heroSlides[1]['src'] ?? $heroSlides[0]['src'];
 
-    // Profil Foto Gereja
+    // Gambar untuk section "Tentang Kami" (memakai foto ke-2 jika ada, atau foto ke-1)
+    $aboutImage = isset($heroSlides[1]) ? $heroSlides[1]['src'] : $heroSlides[0]['src'];
+
+    // Profil Foto Gereja (Statis)
     $profil = [
         'depan' => ['file' => 'gereja-depan.png',  'caption' => 'Gereja Santo Petrus – Tuban'],
         'dekat' => ['file' => 'gereja-dekat.png',  'caption' => 'Gereja Santo Petrus – Tuban'],
