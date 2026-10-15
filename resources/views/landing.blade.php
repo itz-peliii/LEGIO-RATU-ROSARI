@@ -23,8 +23,8 @@
     // Profil Foto Gereja (Statis)
     $profil = [
         'depan' => ['file' => 'gereja-depan.png',  'caption' => 'Gereja Santo Petrus – Tuban'],
-        'dekat' => ['file' => 'gereja-dekat.png',  'caption' => 'Gereja Santo Petrus – Tuban'],
-        'goa'   => ['file' => 'goa-maria.png',     'caption' => 'Goa Maria Santo Petrus – Tuban'],
+        'interior' => ['file' => 'interior.jpeg',  'caption' => 'Gereja Santo Petrus – Tuban'],
+        'goa'   => ['file' => 'goa-maria.png',      'caption' => 'Goa Maria Santo Petrus – Tuban'],
         'balai' => ['file' => 'balai-paroki.png',  'caption' => 'Balai Paroki'],
     ];
 
@@ -135,9 +135,19 @@
 }
 
 .parish .docs { background: var(--paper); }
-.parish .docs-head { display: grid; gap: 1.5rem; margin-bottom: 2.5rem; align-items: end; }
-@media (min-width: 1024px) { .parish .docs-head { grid-template-columns: 1fr 1fr; gap: 4rem; } }
-.parish .docs-head h2 { color: var(--ink); }
+.parish .docs-head { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center; 
+    gap: 1rem; 
+    margin-bottom: 2.5rem; 
+}
+.parish .docs-head h2 { 
+    color: var(--ink); 
+    text-align: center; 
+    width: 100%; 
+}
 .parish .stage { position: relative; aspect-ratio: 16 / 9; max-height: 82svh; width: 100%; overflow: hidden; background: var(--ink); touch-action: pan-y; }
 .parish .stage-slide { position: absolute; inset: 0; margin: 0; opacity: 0; transition: opacity 1s ease; }
 .parish .stage-slide.is-active { opacity: 1; z-index: 1; }
@@ -161,9 +171,14 @@
 .parish .lightbox p { color: #fff; text-align: center; margin-top: .9rem; font-family: var(--display); font-size: 1.3rem; }
 .parish .lightbox .close { position: absolute; top: -3rem; right: 0; }
 
+/* CSS Profil Asli */
 .parish .profil { background: var(--paper); }
-.parish .profil h2 { color: var(--ink); max-width: 18ch; }
-.parish .profil-grid { display: grid; gap: 2.5rem 2rem; margin-top: 3.5rem; }
+.parish .profil h2 { 
+    color: var(--ink); 
+    margin-bottom: 2.5rem; 
+    text-align: center; /* Membuat teks Profil Gereja berada di tengah */
+    max-width: 100%;    /* Memastikan teks bisa memenuhi area tengah */
+}.parish .profil-grid { display: grid; gap: 2.5rem 2rem; margin-top: 3.5rem; }
 @media (min-width: 768px) {
     .parish .profil-grid { grid-template-columns: repeat(12, 1fr); gap: 3.5rem 2rem; }
     .parish .p-wide { grid-column: span 7; }
@@ -176,6 +191,84 @@
 .parish .p-wide .p-photo img { aspect-ratio: 16 / 11; }
 .parish .p-item:hover .p-photo img { transform: scale(1.03); }
 .parish .p-item figcaption { margin-top: 1rem; padding-top: .8rem; border-top: 2px solid var(--gold); width: fit-content; min-width: 8rem; font-family: var(--display); font-size: 1.45rem; font-weight: 600; color: var(--ink); }
+
+/* Penyesuaian Carousel Profil agar Sangat Besar & Mengisi Container (100% Full Width Wrap) */
+/* Style Carousel Profil Modern & Pas Foto */
+.parish .profil-carousel-wrapper { 
+    position: relative; 
+    width: 100%; 
+    max-width: 960px; 
+    margin: 0 auto; 
+}
+.parish .profil-stage-large { 
+    position: relative; 
+    width: 100%; 
+    min-height: 480px;
+    background: #fff; 
+    border-radius: 16px; 
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    touch-action: pan-y; 
+}
+.parish .profil-stage-large .profil-slide { 
+    position: absolute; 
+    inset: 0; 
+    margin: 0; 
+    opacity: 0; 
+    transition: opacity 0.6s ease-in-out; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #f8fafc;
+}
+.parish .profil-stage-large .profil-slide.is-active { 
+    opacity: 1; 
+    z-index: 1; 
+}
+.parish .profil-stage-large img { 
+    max-width: 100%; 
+    max-height: 420px; 
+    width: auto;
+    height: auto;
+    object-fit: contain; 
+    display: block; 
+    border-radius: 8px;
+}
+.parish .profil-stage-large .profil-cap { 
+    position: absolute; 
+    left: 0; 
+    right: 0; 
+    bottom: 0; 
+    z-index: 2; 
+    pointer-events: none; 
+    padding: 1.2rem 2rem; 
+    color: var(--ink); 
+    font-family: var(--display); 
+    font-size: clamp(1.2rem, 2vw, 1.6rem); 
+    font-weight: 600; 
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(4px);
+    text-align: center;
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+.parish .profil-stage-large .round-btn { 
+    position: absolute; 
+    top: 45%; 
+    transform: translateY(-50%); 
+    z-index: 3; 
+    background: rgba(22, 35, 63, 0.8);
+    color: #fff;
+    border: none;
+    width: 3rem;
+    height: 3rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.parish .profil-stage-large .round-btn:hover {
+    background: var(--gold);
+}
+.parish .profil-stage-large [data-prev] { left: 1.2rem; } 
+.parish .profil-stage-large [data-next] { right: 1.2rem; }
 
 .parish .jadwal { background: #fff; }
 .parish .jadwal-grid { display: grid; gap: 3rem; align-items: center; }
@@ -194,14 +287,14 @@
 
 @media (prefers-reduced-motion: reduce) {
     .parish .hero-slide.is-active, .parish .rise { animation: none; opacity: 1; transform: none; }
-    .parish .hero-slide, .parish .stage-slide, .parish .stage-slide img { transition: none; }
+    .parish .hero-slide, .parish .stage-slide, .parish .stage-slide img, .parish .profil-slide { transition: none; }
     .parish .bar { display: none; }
 }
 </style>
 
 <div class="parish">
 
-    <!-- 1. HERO SECTION -->
+    <!-- HERO SECTION -->
     <section id="hero" class="hero" data-slider data-interval="6500" aria-roledescription="carousel" aria-label="Foto kegiatan paroki">
         @foreach($heroSlides as $i => $slide)
             <div class="hero-slide {{ $i === 0 ? 'is-active' : '' }}" data-slide
@@ -235,7 +328,7 @@
         <div class="bar"><i data-bar></i></div>
     </section>
 
-    <!-- 2. TENTANG KAMI -->
+    <!-- TENTANG KAMI -->
     <section id="about" class="sect about">
         <div class="wrap">
             <div class="about-grid">
@@ -256,33 +349,44 @@
         </div>
     </section>
 
-    <!-- 3. PROFIL GEREJA -->
-    <section id="profile" class="sect profil">
+    <!-- VISI & MISI -->
+    <section id="vision-mission" class="sect vm">
         <div class="wrap">
-            <h2 class="h-display">Profil Gereja</h2>
+            <h2 class="h-display">Visi &amp; Misi</h2>
 
-            <div class="profil-grid">
-                <figure class="p-item p-wide">
-                    <div class="p-photo"><img src="{{ asset('assets/images/profil/' . $profil['depan']['file']) }}" alt="{{ $profil['depan']['caption'] }}" loading="lazy"></div>
-                    <figcaption>{{ $profil['depan']['caption'] }}</figcaption>
-                </figure>
-                <figure class="p-item p-narrow offset">
-                    <div class="p-photo"><img src="{{ asset('assets/images/profil/' . $profil['goa']['file']) }}" alt="{{ $profil['goa']['caption'] }}" loading="lazy"></div>
-                    <figcaption>{{ $profil['goa']['caption'] }}</figcaption>
-                </figure>
-                <figure class="p-item p-narrow">
-                    <div class="p-photo"><img src="{{ asset('assets/images/profil/' . $profil['balai']['file']) }}" alt="{{ $profil['balai']['caption'] }}" loading="lazy"></div>
-                    <figcaption>{{ $profil['balai']['caption'] }}</figcaption>
-                </figure>
-                <figure class="p-item p-wide">
-                    <div class="p-photo"><img src="{{ asset('assets/images/profil/' . $profil['dekat']['file']) }}" alt="{{ $profil['dekat']['caption'] }}" loading="lazy"></div>
-                    <figcaption>{{ $profil['dekat']['caption'] }}</figcaption>
-                </figure>
+            <div class="rich rich-dark" style="max-width: 46rem; margin-top: 3rem; position: relative; z-index: 1;">
+                {!! $settings['visi_misi'] ?? '<p>Visi & Misi belum diisi oleh admin.</p>' !!}
             </div>
         </div>
     </section>
 
-    <!-- 4. JADWAL MISA -->
+    <!-- PROFIL GEREJA (CAROUSEL AUTOMATIC BESAR) -->
+    <section id="profile" class="sect profil">
+        <div class="wrap">
+            <h2 class="h-display">Profil Gereja</h2>
+
+            <div class="profil-carousel-wrapper" data-slider data-interval="5000" data-pause-hover>
+                <div class="profil-stage-large" aria-roledescription="carousel" aria-label="Profil Gereja Santo Petrus">
+                    @foreach($profil as $i => $p)
+                        <figure class="profil-slide {{ $loop->first ? 'is-active' : '' }}" data-slide data-title="{{ $p['caption'] }}">
+                            <img src="{{ asset('assets/images/profil/' . $p['file']) }}" alt="{{ $p['caption'] }}" loading="{{ $loop->first ? 'eager' : 'lazy' }}">
+                        </figure>
+                    @endforeach
+
+                    <div class="profil-cap" data-caption></div>
+
+                    <button type="button" class="round-btn" data-prev aria-label="Foto profil sebelumnya">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+                    </button>
+                    <button type="button" class="round-btn" data-next aria-label="Foto profil berikutnya">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- JADWAL MISA -->
     <section id="schedule" class="sect jadwal">
         <div class="wrap">
             <div class="jadwal-grid">
@@ -303,18 +407,7 @@
         </div>
     </section>
 
-    <!-- 5. VISI & MISI -->
-    <section id="vision-mission" class="sect vm">
-        <div class="wrap">
-            <h2 class="h-display">Visi &amp; Misi</h2>
-
-            <div class="rich rich-dark" style="max-width: 46rem; margin-top: 3rem; position: relative; z-index: 1;">
-                {!! $settings['visi_misi'] ?? '<p>Visi & Misi belum diisi oleh admin.</p>' !!}
-            </div>
-        </div>
-    </section>
-
-    <!-- 6. DOKUMENTASI KEGIATAN -->
+    <!-- DOKUMENTASI KEGIATAN -->
     <section id="documentation" class="sect docs">
         <div class="wrap">
             <div class="docs-head">
