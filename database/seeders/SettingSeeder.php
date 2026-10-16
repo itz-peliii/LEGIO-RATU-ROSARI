@@ -19,7 +19,7 @@ class SettingSeeder extends Seeder
             
             'schedule_note' => 'Misa di Gereja Santo Petrus, Tuban. Hari ini ditandai otomatis pada daftar.',
             
-            'address' => 'Jl. Gereja No. 123, Tuban',
+            'address' => 'Jl. Panglima Sudirman 159,Kel. Sidomulyo RT. 02 / RW. 03 Kec. Tuban - 62312',
             'email' => 'info@parokituban.org',
             'phone' => '+62 812-3456-7890',
         ];

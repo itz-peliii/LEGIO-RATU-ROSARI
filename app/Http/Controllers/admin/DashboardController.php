@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use App\Models\Documentation;
+use App\Models\Legio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -18,7 +19,10 @@ class DashboardController extends Controller
         // Ambil seluruh dokumentasi terurut
         $documentations = Documentation::orderBy('sort_order', 'asc')->latest()->get();
 
-        return view('admin.dashboard', compact('settings', 'documentations'));
+        // Ambil seluruh legio terurut
+        $legios = Legio::orderBy('sort_order')->orderBy('id')->get();
+
+        return view('admin.dashboard', compact('settings', 'documentations', 'legios'));
     }
 
     public function updateSettings(Request $request)

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DocumentationController;
+use App\Http\Controllers\Admin\LegioController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,11 @@ Route::middleware(['auth'])->prefix('admin')->as('admin.')->group(function () {
     // Action Documentation
     Route::post('/documentations', [DocumentationController::class, 'store'])->name('documentations.store');
     Route::delete('/documentations/{documentation}', [DocumentationController::class, 'destroy'])->name('documentations.destroy');
+    
+    // Action Legio
+    Route::post('/legios', [LegioController::class, 'store'])->name('legios.store');
+    Route::put('/legios/{legio}', [LegioController::class, 'update'])->name('legios.update');
+    Route::delete('/legios/{legio}', [LegioController::class, 'destroy'])->name('legios.destroy');
 });
 
 require __DIR__.'/auth.php';

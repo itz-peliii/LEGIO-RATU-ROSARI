@@ -28,6 +28,7 @@
                     <a href="#hero" class="hover:text-indigo-600 transition">Beranda</a>
                     <a href="#about" class="hover:text-indigo-600 transition">Tentang Kami</a>
                     <a href="#vision-mission" class="hover:text-indigo-600 transition">Visi & Misi</a>
+                    <a href="#legio" class="hover:text-indigo-600 transition">Legio Maria</a>
                     <a href="#documentation" class="hover:text-indigo-600 transition">Dokumentasi</a>
                 </div>
 
@@ -58,6 +59,7 @@
             <a @click="open = false" href="#hero" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 transition">Beranda</a>
             <a @click="open = false" href="#about" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 transition">Tentang Kami</a>
             <a @click="open = false" href="#vision-mission" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 transition">Visi & Misi</a>
+            <a @click="open = false" href="#legio" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 transition">Legio Maria</a>
             <a @click="open = false" href="#documentation" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 transition">Dokumentasi</a>
         </div>
     </nav>
@@ -82,6 +84,7 @@
                     <ul class="space-y-2 text-sm">
                         <li><a href="#about" class="hover:text-white transition">Tentang Kami</a></li>
                         <li><a href="#vision-mission" class="hover:text-white transition">Visi & Misi</a></li>
+                        <li><a href="#legio" class="hover:text-white transition">Legio Maria</a></li>
                         <li><a href="#documentation" class="hover:text-white transition">Dokumentasi</a></li>
                     </ul>
                 </div>

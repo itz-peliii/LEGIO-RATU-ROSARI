@@ -67,6 +67,99 @@
     </div>
 </form>
 
+<!-- CARD LEGIO MARIA -->
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mt-8">
+    <div class="border-b pb-4 mb-6">
+        <h3 class="text-lg font-semibold text-gray-800">Legio Maria</h3>
+        <p class="text-xs text-gray-500 mt-0.5">Tambah, edit, atau hapus legio yang tampil di section "Legio Maria" pada website.</p>
+    </div>
+
+    @if($errors->legio->any())
+        <div class="mb-4 p-3 bg-red-50 border-l-4 border-red-500 text-red-700 text-xs rounded">
+            @foreach($errors->legio->all() as $err)
+                <p>{{ $err }}</p>
+            @endforeach
+        </div>
+    @endif
+
+    <!-- Daftar legio yang sudah ada -->
+    <div class="space-y-6">
+        @foreach($legios as $legio)
+            <div class="border rounded-xl p-4 bg-gray-50">
+                <form action="{{ route('admin.legios.update', $legio) }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+                    @csrf
+                    @method('PUT')
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nama Legio</label>
+                        <input type="text" name="name" value="{{ $legio->name }}" required class="w-full px-4 py-2 border rounded-lg text-sm bg-white">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
+                        <input id="legio_desc_{{ $legio->id }}" type="hidden" name="description" value="{{ $legio->description }}">
+                        <trix-editor input="legio_desc_{{ $legio->id }}" class="bg-white border rounded-lg min-h-[160px] text-sm"></trix-editor>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Foto</label>
+                        @if($legio->photo_path)
+                            <img src="{{ asset('storage/' . $legio->photo_path) }}" alt="{{ $legio->name }}" class="w-full max-w-sm max-h-48 object-cover rounded-lg mb-2">
+                            <label class="flex items-center gap-2 text-xs text-red-600 mb-2">
+                                <input type="checkbox" name="remove_photo" value="1"> Hapus foto ini
+                            </label>
+                        @endif
+                        <input type="file" name="photo" accept="image/*" class="text-xs text-gray-600">
+                        <p class="text-xs text-gray-500 mt-1">JPG/PNG/WEBP, maks 2 MB. Kosongkan jika tidak ingin mengganti.</p>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button type="submit" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg text-sm shadow transition">
+                            Simpan Perubahan
+                        </button>
+                    </div>
+                </form>
+
+                <form action="{{ route('admin.legios.destroy', $legio) }}" method="POST" onsubmit="return confirm('Hapus legio ini beserta fotonya?')" class="mt-2">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="text-xs text-red-600 hover:text-red-800 font-medium">Hapus Legio ini</button>
+                </form>
+            </div>
+        @endforeach
+    </div>
+
+    <!-- Form tambah legio baru -->
+    <div class="border-2 border-dashed rounded-xl p-4 mt-6">
+        <p class="text-sm font-semibold text-emerald-700 mb-4">+ Tambah Legio Baru</p>
+        <form action="{{ route('admin.legios.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+            @csrf
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Legio</label>
+                <input type="text" name="name" required placeholder="Contoh: Legio Maria Presidium “...”" class="w-full px-4 py-2 border rounded-lg text-sm">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
+                <input id="legio_desc_new" type="hidden" name="description">
+                <trix-editor input="legio_desc_new" class="bg-white border rounded-lg min-h-[140px] text-sm"></trix-editor>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Foto (opsional)</label>
+                <input type="file" name="photo" accept="image/*" class="text-xs text-gray-600">
+            </div>
+
+            <div class="flex justify-end">
+                <button type="submit" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg text-sm shadow transition">
+                    + Tambah Legio
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <!-- CARD FOTO DOKUMENTASI -->
 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mt-8">
     <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b pb-4 mb-6">

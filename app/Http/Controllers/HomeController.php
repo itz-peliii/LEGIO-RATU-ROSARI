@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Setting;
 use App\Models\Documentation;
+use App\Models\Legio;
 
 class HomeController extends Controller
 {
@@ -17,6 +18,9 @@ class HomeController extends Controller
         // Ambil daftar foto dokumentasi terbaru
         $documentations = Documentation::latest()->get();
 
-        return view('landing', compact('settings', 'documentations'));
+        // Ambil daftar legio (terurut)
+        $legios = Legio::orderBy('sort_order')->orderBy('id')->get();
+
+        return view('landing', compact('settings', 'documentations', 'legios'));
     }
 }

@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             // Jika nanti ada seeder lain (misal SettingSeeder), tinggal tambahkan di sini:
             SettingSeeder::class,
+            LegioSeeder::class,
             DocumentationSeeder::class,
         ]);
     }

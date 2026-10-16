@@ -290,6 +290,25 @@
     .parish .hero-slide, .parish .stage-slide, .parish .stage-slide img, .parish .profil-slide { transition: none; }
     .parish .bar { display: none; }
 }
+
+/* ===== LEGIO MARIA ===== */
+.parish .legio { background: #fff; }
+.parish .legio-head { text-align: center; margin: 0 auto 3.5rem; }
+.parish .legio-head h2 { color: var(--ink); }
+.parish .legio-grid { display: grid; gap: 2.5rem; }
+@media (min-width: 1024px) { .parish .legio-grid { grid-template-columns: 1fr 1fr; gap: 3rem; } }
+.parish .legio-card { background: var(--paper); border-top: 3px solid var(--gold); display: flex; flex-direction: column; }
+.parish .legio-photo { aspect-ratio: 16 / 10; background: var(--ink); overflow: hidden; display: grid; place-items: center; }
+.parish .legio-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.parish .legio-photo .cross { width: 44px; color: rgba(255,255,255,.18); }
+.parish .legio-body { padding: 2rem; }
+.parish .legio-body h3 { font-family: var(--display); font-weight: 600; font-size: clamp(1.6rem, 2.4vw, 2.1rem); line-height: 1.15; color: var(--ink); margin-bottom: 1.25rem; }
+.parish .legio-body .rich { font-size: 1.05rem; }
+.parish .legio-grid.is-single { grid-template-columns: 1fr; max-width: 62rem; margin: 0 auto; }
+@media (min-width: 900px) {
+    .parish .legio-grid.is-single .legio-card { flex-direction: row; }
+    .parish .legio-grid.is-single .legio-photo { flex: 0 0 42%; aspect-ratio: auto; min-height: 20rem; }
+}
 </style>
 
 <div class="parish">
@@ -359,6 +378,35 @@
             </div>
         </div>
     </section>
+
+        <!-- LEGIO MARIA -->
+    @if($legios->isNotEmpty())
+    <section id="legio" class="sect legio">
+        <div class="wrap">
+            <div class="legio-head">
+                <h2 class="h-display">Legio Maria</h2>
+            </div>
+
+            <div class="legio-grid {{ $legios->count() === 1 ? 'is-single' : '' }}">
+                @foreach($legios as $legio)
+                    <article class="legio-card">
+                        <div class="legio-photo">
+                            @if($legio->photo_path)
+                                <img src="{{ asset('storage/' . $legio->photo_path) }}" alt="{{ $legio->name }}" loading="lazy">
+                            @else
+                                <svg class="cross" viewBox="0 0 24 32" aria-hidden="true"><path d="M10 0h4v9h8v4h-8v19h-4V13H2V9h8z" fill="currentColor"/></svg>
+                            @endif
+                        </div>
+                        <div class="legio-body">
+                            <h3>{{ $legio->name }}</h3>
+                            <div class="rich">{!! $legio->description !!}</div>
+                        </div>
+                    </article>
+                @endforeach
+            </div>
+        </div>
+    </section>
+    @endif
 
     <!-- PROFIL GEREJA (CAROUSEL AUTOMATIC BESAR) -->
     <section id="profile" class="sect profil">
