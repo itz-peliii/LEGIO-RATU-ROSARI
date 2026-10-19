@@ -30,6 +30,14 @@
                     <a href="#vision-mission" class="hover:text-indigo-600 transition">Visi & Misi</a>
                     <a href="#legio" class="hover:text-indigo-600 transition">Legio Maria</a>
                     <a href="#documentation" class="hover:text-indigo-600 transition">Dokumentasi</a>
+
+                    @auth
+                        <a href="{{ route('dashboard') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">
+                            {{ auth()->user()->isAdmin() ? 'Dashboard Admin' : 'Area Anggota' }}
+                        </a>
+                    @else
+                        <a href="{{ route('login') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">Login</a>
+                    @endauth
                 </div>
 
                 <!-- Hamburger Button (Mobile Only) -->
@@ -61,6 +69,14 @@
             <a @click="open = false" href="#vision-mission" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 transition">Visi & Misi</a>
             <a @click="open = false" href="#legio" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 transition">Legio Maria</a>
             <a @click="open = false" href="#documentation" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 transition">Dokumentasi</a>
+
+            @auth
+                <a href="{{ route('dashboard') }}" class="block px-3 py-2.5 rounded-lg text-base font-medium text-center text-white bg-indigo-600 hover:bg-indigo-700 transition">
+                    {{ auth()->user()->isAdmin() ? 'Dashboard Admin' : 'Area Anggota' }}
+                </a>
+            @else
+                <a href="{{ route('login') }}" class="block px-3 py-2.5 rounded-lg text-base font-medium text-center text-white bg-indigo-600 hover:bg-indigo-700 transition">Login</a>
+            @endauth
         </div>
     </nav>
 

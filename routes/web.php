@@ -5,15 +5,33 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DocumentationController;
 use App\Http\Controllers\Admin\LegioController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Member\AbsensiController;
+use App\Http\Controllers\Member\KegiatanController;
+use App\Http\Controllers\Member\RenunganController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+// Setelah login (dan register) semua orang diarahkan ke 'dashboard',
+// lalu dilempar ke area yang sesuai dengan rolenya.
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return redirect()->route(auth()->user()->isAdmin() ? 'admin.dashboard' : 'member.absensi');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware(['auth'])->prefix('admin')->as('admin.')->group(function () {
+// ===== AREA ANGGOTA =====
+Route::middleware(['auth'])->prefix('member')->as('member.')->group(function () {
+    Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi');
+
+    Route::get('/jadwal', [KegiatanController::class, 'index'])->name('jadwal');
+    Route::post('/jadwal/{kegiatan}/join', [KegiatanController::class, 'join'])->name('jadwal.join');
+    Route::delete('/jadwal/{kegiatan}/join', [KegiatanController::class, 'leave'])->name('jadwal.leave');
+
+    Route::get('/renungan', [RenunganController::class, 'index'])->name('renungan');
+    Route::post('/renungan', [RenunganController::class, 'store'])->name('renungan.store');
+});
+
+// ===== AREA ADMIN (hanya role admin) =====
+Route::middleware(['auth', 'admin'])->prefix('admin')->as('admin.')->group(function () {
     // Dashboard Admin (Edit Konten)
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::put('/settings', [DashboardController::class, 'updateSettings'])->name('settings.update');

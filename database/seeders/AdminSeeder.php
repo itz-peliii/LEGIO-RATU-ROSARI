@@ -13,13 +13,13 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        // Menggunakan updateOrCreate agar seeder aman dijalankan berulang kali tanpa error duplicate email
-        User::updateOrCreate(
-            ['email' => 'admin@gereja.com'],
-            [
-                'name'     => 'Admin Gereja',
-                'password' => Hash::make('123'),
-            ]
-        );
+        // firstOrNew + forceFill: aman dijalankan berulang kali, dan bisa mengisi 'role'
+        // (yang sengaja tidak mass-assignable).
+        $admin = User::firstOrNew(['email' => 'admin@gereja.com']);
+        $admin->forceFill([
+            'name'     => 'Admin Gereja',
+            'password' => Hash::make('123'),
+            'role'     => User::ROLE_ADMIN,
+        ])->save();
     }
 }

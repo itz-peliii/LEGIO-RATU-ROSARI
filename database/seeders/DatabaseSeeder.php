@@ -19,9 +19,10 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             AdminSeeder::class,
-            // Jika nanti ada seeder lain (misal SettingSeeder), tinggal tambahkan di sini:
             SettingSeeder::class,
             LegioSeeder::class,
+            KegiatanSeeder::class,
+            MemberSeeder::class,
             DocumentationSeeder::class,
         ]);
     }
