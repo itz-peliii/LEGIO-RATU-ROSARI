@@ -1,5 +1,14 @@
 @extends('layouts.app')
 
+{{--
+    CATATAN: font Cormorant Garamond & Nunito Sans TIDAK lagi di-@import dari sini.
+    Tambahkan baris berikut ke <head> pada resources/views/layouts/app.blade.php:
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Nunito+Sans:wght@400;600;700&display=swap">
+--}}
+
 @section('content')
 
 @php
@@ -29,17 +38,16 @@
     ];
 
     // Jadwal Misa Paroki (0 = Minggu, 1 = Senin, ..., 6 = Sabtu)
+    // 'note' = keterangan kecil di bawah nama hari, boleh null
     $jadwalMisa = [
-        ['label' => 'Senin – Kamis & Sabtu (Harian)', 'time' => '05.30', 'days' => [1, 2, 3, 4, 6]],
-        ['label' => 'Jumat',  'time' => '18.00', 'days' => [5]],
-        ['label' => 'Sabtu',  'time' => '18.00', 'days' => [6]],
-        ['label' => 'Minggu', 'time' => '07.00', 'days' => [0]],
+        ['label' => 'Senin – Kamis & Sabtu', 'note' => 'Misa harian',   'time' => '05.30', 'days' => [1, 2, 3, 4, 6]],
+        ['label' => 'Jumat',                 'note' => 'Misa sore',     'time' => '18.00', 'days' => [5]],
+        ['label' => 'Sabtu',                 'note' => 'Misa sore',     'time' => '18.00', 'days' => [6]],
+        ['label' => 'Minggu',                'note' => 'Misa mingguan', 'time' => '07.00', 'days' => [0]],
     ];
 @endphp
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Nunito+Sans:wght@400;600;700&display=swap');
-
 /* =========================================================
    TOKENS & BASE
    ========================================================= */
@@ -56,6 +64,8 @@
     --display: 'Cormorant Garamond', Georgia, serif;
     --body: 'Nunito Sans', system-ui, sans-serif;
     --ease: cubic-bezier(.2, .7, .2, 1);
+    --r: 18px;   /* radius kartu, dipakai seragam di semua section */
+    --nav: 5rem; /* tinggi navbar (h-20 = 5rem). Ubah kalau tinggi navbar berubah */
     font-family: var(--body);
     color: var(--text);
 }
@@ -68,13 +78,22 @@
     font-weight: 600;
     line-height: 1.04;
     letter-spacing: -0.01em;
-    font-size: clamp(2.6rem, 4.8vw, 4rem);
+    font-size: clamp(2.5rem, 4.6vw, 3.8rem);
     text-wrap: balance;
 }
 .parish .cross { width: 14px; height: auto; fill: currentColor; flex: none; }
 
-/* Section tidak lagi dipaksa setinggi layar: lebih rapat, tidak ada ruang kosong berlebih */
-.parish .sect { padding: clamp(4.5rem, 9vw, 8rem) 0; }
+/* Section punya tinggi minimum supaya tidak kempis, tapi TIDAK dipaksa
+   setinggi layar — jadi teks panjang dari admin tidak pernah terpotong. */
+.parish .sect {
+    min-height: min(100svh - var(--nav), 44rem);
+    display: flex;
+    align-items: center;
+    padding: clamp(4.5rem, 9vh, 8rem) 0;
+    scroll-margin-top: var(--nav);
+}
+
+.parish ::selection { background: var(--gold-soft); color: var(--ink); }
 
 /* =========================================================
    JUDUL SECTION (eyebrow + judul + garis emas)
@@ -85,14 +104,15 @@
     color: var(--gold); margin-bottom: 1rem;
 }
 .parish .eyebrow::before { content: ''; width: 2.25rem; height: 1px; background: currentColor; }
+.parish .sec-head { margin-bottom: 1.75rem; }
 .parish .sec-head h2 { color: var(--ink); }
-.parish .sec-head h2::after { content: ''; display: block; width: 3.5rem; height: 3px; background: var(--gold); margin-top: 1.25rem; }
-.parish .sec-head { margin-bottom: 2rem; }
+.parish .sec-head h2::after { content: ''; display: block; width: 3.5rem; height: 3px; background: var(--gold); margin-top: 1.15rem; }
 
-.parish .sec-head.center { text-align: center; margin-bottom: 3.5rem; }
+.parish .sec-head.center { text-align: center; margin-bottom: clamp(2rem, 5vh, 3.5rem); }
 .parish .sec-head.center .eyebrow { justify-content: center; }
 .parish .sec-head.center .eyebrow::after { content: ''; width: 2.25rem; height: 1px; background: currentColor; }
 .parish .sec-head.center h2::after { margin-left: auto; margin-right: auto; }
+.parish .sec-head.center .rich { margin-inline: auto; }
 
 .parish .sec-head.on-dark h2 { color: #fff; }
 .parish .sec-head.on-dark .eyebrow { color: var(--gold-soft); }
@@ -102,8 +122,9 @@
    Trix menghasilkan <div>, <h1>, <ul>, <ol>, <blockquote>, bukan hanya <p>,
    jadi semuanya diberi style supaya hasil edit admin tetap rapi.
    ========================================================= */
-.parish .rich { font-size: 1.1rem; line-height: 1.85; }
+.parish .rich { font-size: 1.1rem; line-height: 1.85; max-width: 42rem; }
 .parish .rich p, .parish .rich div { margin: 0 0 1.15em; }
+.parish .rich p, .parish .rich div, .parish .rich li { text-wrap: pretty; }
 .parish .rich > :last-child { margin-bottom: 0; }
 .parish .rich h1, .parish .rich h2, .parish .rich h3 {
     font-family: var(--display); font-weight: 600; line-height: 1.15;
@@ -130,9 +151,10 @@
 .parish .hero-shade {
     position: absolute; inset: 0;
     background: linear-gradient(to top, rgba(12,21,43,.94) 0%, rgba(12,21,43,.55) 40%, rgba(12,21,43,.18) 75%),
-                linear-gradient(to bottom, rgba(12,21,43,.6) 0%, rgba(12,21,43,0) 24%);
+                linear-gradient(to bottom, rgba(12,21,43,.6) 0%, rgba(12,21,43,0) 24%),
+                radial-gradient(ellipse at 50% 60%, rgba(12,21,43,0) 40%, rgba(12,21,43,.4) 100%);
 }
-.parish .hero-body { position: relative; width: 100%; padding-bottom: 6rem; padding-top: 9rem; }
+.parish .hero-body { position: relative; width: 100%; padding-bottom: 6.5rem; padding-top: 9rem; }
 .parish .hero-title {
     font-family: var(--display); font-weight: 600; line-height: 1;
     font-size: clamp(3rem, 8vw, 6.6rem); max-width: 14ch; text-wrap: balance;
@@ -158,17 +180,20 @@
 }
 
 .parish .btn-gold {
-    display: inline-block; padding: .95rem 2.1rem; background: var(--gold); color: #fff; font-weight: 700;
-    border-radius: 999px; text-decoration: none; box-shadow: 0 10px 24px -10px rgba(185,138,62,.8);
-    transition: background .25s, transform .25s;
+    display: inline-block; padding: .95rem 2.1rem; color: #fff; font-weight: 700;
+    background: linear-gradient(135deg, #c79646, var(--gold) 55%, #a87c33);
+    border-radius: 999px; text-decoration: none; letter-spacing: .01em;
+    box-shadow: 0 10px 24px -10px rgba(185,138,62,.8);
+    transition: filter .25s, transform .25s, box-shadow .25s;
 }
-.parish .btn-gold:hover { background: #a07632; transform: translateY(-2px); }
+.parish .btn-gold:hover { filter: brightness(1.07); transform: translateY(-2px); box-shadow: 0 16px 30px -12px rgba(185,138,62,.9); }
 .parish .btn-ghost {
     display: inline-block; padding: .95rem 2.1rem; color: #fff; font-weight: 700; text-decoration: none;
     border: 1px solid rgba(255,255,255,.55); border-radius: 999px; background: rgba(255,255,255,.06);
     backdrop-filter: blur(6px); transition: background .25s, border-color .25s, transform .25s;
 }
 .parish .btn-ghost:hover { background: rgba(255,255,255,.18); border-color: #fff; transform: translateY(-2px); }
+.parish .btn-gold:active, .parish .btn-ghost:active { transform: translateY(0); }
 
 .parish .hero-controls { position: absolute; right: 1.5rem; bottom: 2.25rem; display: flex; align-items: center; gap: .75rem; }
 @media (min-width: 1024px) { .parish .hero-controls { right: 3rem; bottom: 3.5rem; } }
@@ -180,6 +205,24 @@
 }
 .parish .round-btn:hover { background: rgba(255,255,255,.22); border-color: #fff; }
 .parish .round-btn svg { width: 1.1rem; height: 1.1rem; }
+
+/* Petunjuk scroll: memberi tahu bahwa masih ada isi di bawah hero */
+.parish .scroll-cue {
+    position: absolute; left: 50%; bottom: 2.25rem; transform: translateX(-50%);
+    z-index: 3; width: 2.6rem; height: 2.6rem; display: grid; place-items: center;
+    color: rgba(255,255,255,.8); border: 1px solid rgba(255,255,255,.35);
+    border-radius: 999px; background: rgba(255,255,255,.07); backdrop-filter: blur(6px);
+    animation: cue 2.4s var(--ease) infinite;
+    transition: background .25s, color .25s;
+}
+.parish .scroll-cue:hover { background: rgba(255,255,255,.2); color: #fff; }
+.parish .scroll-cue svg { width: 1.05rem; height: 1.05rem; }
+@keyframes cue {
+    0%, 100% { transform: translate(-50%, 0); }
+    50%      { transform: translate(-50%, 7px); }
+}
+@media (max-width: 640px) { .parish .scroll-cue { display: none; } }
+
 .parish .bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: rgba(255,255,255,.15); }
 .parish .bar i { display: block; height: 100%; width: 0; background: var(--gold); }
 .parish .bar i.run { animation: fill var(--interval, 6000ms) linear forwards; }
@@ -205,8 +248,13 @@
 @media (min-width: 1024px) { .parish .about-grid { grid-template-columns: 5fr 7fr; gap: 6rem; } }
 .parish .portrait { position: relative; margin: 0 1.25rem 1.25rem 0; }
 .parish .portrait::before { content: ''; position: absolute; inset: 1.25rem -1.25rem -1.25rem 1.25rem; border: 2px solid var(--gold); z-index: 0; }
-.parish .portrait img { position: relative; z-index: 1; display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; box-shadow: var(--shadow); }
-.parish .about .rich > :first-child { font-size: 1.28rem; line-height: 1.7; color: var(--ink); }
+.parish .portrait img {
+    position: relative; z-index: 1; display: block; width: 100%;
+    aspect-ratio: 4 / 5; max-height: 36rem; object-fit: cover;
+    border-radius: 4px; box-shadow: var(--shadow);
+}
+/* paragraf pembuka dibuat sebagai lead */
+.parish .about .rich > :first-child { font-size: 1.3rem; line-height: 1.65; color: var(--ink); }
 
 /* =========================================================
    VISI & MISI
@@ -217,6 +265,7 @@
     background: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 32'%3E%3Cpath fill='white' fill-opacity='.04' d='M10 0h4v9h8v4h-8v19h-4V13H2V9h8z'/%3E%3C/svg%3E");
     pointer-events: none;
 }
+.parish .vm .rich { max-width: 46rem; }
 .parish .vm .rich h1, .parish .vm .rich h2, .parish .vm .rich h3 {
     font-size: clamp(1.9rem, 3vw, 2.5rem); color: var(--gold-soft); margin: 2.75rem 0 1rem;
 }
@@ -233,12 +282,18 @@
    ========================================================= */
 .parish .legio { background: var(--paper); }
 .parish .legio-grid { display: grid; gap: 2.5rem; }
-@media (min-width: 1024px) { .parish .legio-grid { grid-template-columns: 1fr 1fr; gap: 3rem; } }
+/* auto-fit: 3 kartu tidak lagi menyisakan satu kartu yatim di baris bawah */
+@media (min-width: 1024px) { .parish .legio-grid { grid-template-columns: repeat(auto-fit, minmax(23rem, 1fr)); gap: 2.5rem; } }
 .parish .legio-item { display: flex; }
 .parish .legio-card {
-    flex: 1; width: 100%; display: flex; flex-direction: column; overflow: hidden;
-    background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--gold);
+    position: relative; flex: 1; width: 100%; display: flex; flex-direction: column; overflow: hidden;
+    background: #fff; border: 1px solid var(--line); border-radius: var(--r);
     box-shadow: var(--shadow); transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+/* garis emas atas dibuat dengan ::before supaya ikut lekuk radius */
+.parish .legio-card::before {
+    content: ''; position: absolute; left: 0; right: 0; top: 0; height: 3px;
+    background: var(--gold); z-index: 2;
 }
 .parish .legio-card:hover { transform: translateY(-5px); box-shadow: 0 30px 50px -22px rgba(22,35,63,.45); }
 .parish .legio-photo { position: relative; aspect-ratio: 16 / 10; background: var(--ink); overflow: hidden; display: grid; place-items: center; }
@@ -246,27 +301,29 @@
 .parish .legio-photo img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .9s var(--ease); }
 .parish .legio-card:hover .legio-photo img { transform: scale(1.05); }
 .parish .legio-photo .cross { width: 44px; color: rgba(255,255,255,.18); }
-.parish .legio-body { padding: 2rem; }
+.parish .legio-body { padding: 1.75rem 2rem 2rem; }
 .parish .legio-body h3 {
     font-family: var(--display); font-weight: 600; font-size: clamp(1.6rem, 2.4vw, 2.1rem);
-    line-height: 1.15; color: var(--ink); margin-bottom: 1.25rem;
+    line-height: 1.15; color: var(--ink); margin-bottom: 1rem;
 }
-.parish .legio-body .rich { font-size: 1.05rem; }
+.parish .legio-body .rich { font-size: 1.02rem; line-height: 1.72; max-width: none; }
 .parish .legio-grid.is-single { grid-template-columns: 1fr; max-width: 62rem; margin: 0 auto; }
 @media (min-width: 900px) {
     .parish .legio-grid.is-single .legio-card { flex-direction: row; }
-    .parish .legio-grid.is-single .legio-photo { flex: 0 0 42%; aspect-ratio: auto; min-height: 20rem; }
+    .parish .legio-grid.is-single .legio-photo { flex: 0 0 42%; aspect-ratio: auto; min-height: 18rem; }
     .parish .legio-grid.is-single .legio-body { display: flex; flex-direction: column; justify-content: center; padding: 2.5rem; }
 }
+@media (min-width: 1024px) { .parish .legio-grid:not(.is-single) .legio-photo { aspect-ratio: 2 / 1; } }
 
 /* =========================================================
    PROFIL GEREJA (carousel, latar blur dari foto itu sendiri)
    ========================================================= */
 .parish .profil { background: #fff; }
-.parish .profil-carousel-wrapper { position: relative; width: 100%; max-width: 62rem; margin: 0 auto; }
+.parish .profil-carousel-wrapper { position: relative; width: 100%; max-width: 58rem; margin: 0 auto; }
 .parish .profil-stage-large {
-    position: relative; width: 100%; aspect-ratio: 16 / 9; min-height: 20rem;
-    background: var(--ink); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); touch-action: pan-y;
+    position: relative; width: 100%; aspect-ratio: 16 / 9;
+    background: var(--ink); border-radius: var(--r); overflow: hidden; touch-action: pan-y;
+    box-shadow: var(--shadow), 0 0 0 10px rgba(185,138,62,.1);
 }
 .parish .profil-slide { position: absolute; inset: 0; margin: 0; opacity: 0; transition: opacity .7s ease; display: grid; place-items: center; overflow: hidden; }
 .parish .profil-slide.is-active { opacity: 1; z-index: 1; }
@@ -298,26 +355,39 @@
 .parish .jadwal-grid { display: grid; gap: 3rem; align-items: center; }
 @media (min-width: 1024px) { .parish .jadwal-grid { grid-template-columns: 4fr 7fr; gap: 6rem; } }
 .parish .jadwal-note { color: var(--muted); font-size: 1.05rem; line-height: 1.7; max-width: 24rem; }
-.parish .jadwal-list { margin: 0; padding: 0; list-style: none; background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--ink); box-shadow: var(--shadow); }
+.parish .jadwal-list {
+    position: relative; margin: 0; padding: 0; list-style: none; background: #fff;
+    border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow);
+}
+.parish .jadwal-list::before {
+    content: ''; position: absolute; left: 0; right: 0; top: 0; height: 3px;
+    background: var(--ink); z-index: 2;
+}
 .parish .jadwal-row {
-    position: relative; display: flex; align-items: baseline; justify-content: space-between; gap: 1.5rem;
+    position: relative; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
     padding: 1.5rem 1.75rem; border-bottom: 1px solid var(--line); transition: background .3s;
 }
 .parish .jadwal-row:last-child { border-bottom: 0; }
 .parish .jadwal-row::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--gold); transform: scaleY(0); transition: transform .35s var(--ease); }
 .parish .jadwal-row:hover { background: #f8fafd; }
 .parish .jadwal-day { font-family: var(--display); font-weight: 600; font-size: clamp(1.4rem, 2.6vw, 2rem); color: var(--ink); line-height: 1.2; }
+.parish .jadwal-sub {
+    display: block; margin-top: .4rem;
+    font-family: var(--body); font-size: .74rem; font-weight: 700;
+    letter-spacing: .18em; text-transform: uppercase; color: var(--muted);
+}
 .parish .jadwal-time { font-family: var(--display); font-weight: 700; font-size: clamp(1.9rem, 3.6vw, 2.9rem); color: var(--gold); line-height: 1; white-space: nowrap; font-variant-numeric: lining-nums tabular-nums; }
 .parish .today-tag { display: none; margin-left: .75rem; font-family: var(--body); font-size: .78rem; font-weight: 700; color: #fff; background: var(--gold); padding: .2rem .65rem; border-radius: 999px; vertical-align: middle; }
 .parish .jadwal-row.is-today { background: #fbf6ea; }
 .parish .jadwal-row.is-today::before { transform: scaleY(1); }
 .parish .jadwal-row.is-today .today-tag { display: inline-block; }
+.parish .jadwal-row.is-today .jadwal-sub { color: var(--gold); }
 
 /* =========================================================
    DOKUMENTASI
    ========================================================= */
-.parish .docs { background: #fff; }
-.parish .stage { position: relative; aspect-ratio: 16 / 9; max-height: 82svh; width: 100%; overflow: hidden; background: var(--ink); border-radius: 20px; box-shadow: var(--shadow); touch-action: pan-y; }
+.parish .docs { background: #fff; min-height: 0; display: block; }
+.parish .stage { position: relative; aspect-ratio: 16 / 9; max-height: 82svh; width: 100%; overflow: hidden; background: var(--ink); border-radius: var(--r); box-shadow: var(--shadow); touch-action: pan-y; }
 .parish .stage-slide { position: absolute; inset: 0; margin: 0; opacity: 0; transition: opacity 1s ease; }
 .parish .stage-slide.is-active { opacity: 1; z-index: 1; }
 .parish .stage-slide button { display: block; width: 100%; height: 100%; padding: 0; border: 0; cursor: zoom-in; background: none; }
@@ -331,13 +401,16 @@
 }
 .parish .stage .round-btn { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; }
 .parish .stage [data-prev] { left: 1rem; } .parish .stage [data-next] { right: 1rem; }
-.parish .thumbs { display: flex; gap: .6rem; margin-top: .9rem; overflow-x: auto; padding: .35rem .35rem .5rem; scrollbar-width: thin; }
+.parish .thumbs { display: flex; gap: .6rem; margin-top: .9rem; overflow-x: auto; padding: .35rem .35rem .5rem; scrollbar-width: thin; scrollbar-color: var(--gold-soft) transparent; }
+.parish .thumbs::-webkit-scrollbar { height: 6px; }
+.parish .thumbs::-webkit-scrollbar-thumb { background: var(--gold-soft); border-radius: 999px; }
+.parish .thumbs::-webkit-scrollbar-track { background: transparent; }
 .parish .thumb { flex: none; width: 7.5rem; aspect-ratio: 16 / 10; border: 0; padding: 0; cursor: pointer; opacity: .55; border-radius: 8px; overflow: hidden; outline: 2px solid transparent; outline-offset: 2px; transition: opacity .25s, outline-color .25s; }
 .parish .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .parish .thumb:hover { opacity: .85; }
 .parish .thumb[aria-current="true"] { opacity: 1; outline-color: var(--gold); }
 .parish .is-single [data-prev], .parish .is-single [data-next], .parish .is-single .thumbs, .parish .is-single .stage-count { display: none; }
-.parish .empty-docs { padding: 4rem 1.5rem; text-align: center; border: 1px dashed #b8c1d4; color: var(--muted); border-radius: 16px; }
+.parish .empty-docs { padding: 4rem 1.5rem; text-align: center; border: 1px dashed #b8c1d4; color: var(--muted); border-radius: var(--r); }
 
 .parish dialog.lightbox { border: 0; padding: 0; background: transparent; max-width: 94vw; max-height: 92vh; overflow: visible; }
 .parish dialog.lightbox::backdrop { background: rgba(10,16,32,.92); }
@@ -398,50 +471,6 @@
 .parish .bg-arch.a-right { right: 3%; width: 8rem; transform: scaleX(-1); opacity: .22; }
 @media (min-width: 1024px) { .parish .bg-arch { display: block; } }
 
-/* cincin cahaya emas di sekeliling carousel profil */
-.parish .profil-stage-large { box-shadow: var(--shadow), 0 0 0 10px rgba(185,138,62,.1); }
-
-@media (prefers-reduced-motion: reduce) {
-    .parish .orb, .parish .bg-rosary, .parish .bg-rays { animation: none; }
-}
-
-/* =========================================================
-   MUAT SATU LAYAR (tiap section pas di layar, tidak terpotong)
-   Letakkan PALING BAWAH di dalam <style> supaya menimpa aturan di atasnya.
-   ========================================================= */
-.parish { --nav: 5rem; } /* tinggi navbar (h-20 = 5rem). Ubah kalau tinggi navbar berubah */
-
-.parish .sect {
-    min-height: calc(100svh - var(--nav));
-    display: flex; align-items: center;
-    padding: clamp(2rem, 5svh, 4rem) 0;
-    scroll-margin-top: var(--nav);
-}
-.parish .sect .h-display { font-size: clamp(2.2rem, 4vw, 3.2rem); }
-.parish .sec-head { margin-bottom: 1.25rem; }
-.parish .sec-head.center { margin-bottom: clamp(1.25rem, 3.5svh, 2.5rem); }
-.parish .sec-head h2::after { margin-top: 1rem; }
-
-/* Tentang Kami: tinggi foto mengikuti tinggi layar */
-.parish .portrait img { max-height: calc(100svh - 17rem); }
-
-/* Legio Maria */
-.parish .legio-body { padding: 1.5rem 2rem; }
-.parish .legio-body h3 { margin-bottom: 1rem; }
-.parish .legio-body .rich { font-size: 1rem; line-height: 1.7; }
-@media (min-width: 900px) { .parish .legio-grid.is-single .legio-photo { min-height: 16rem; } }
-@media (min-width: 1024px) { .parish .legio-grid:not(.is-single) .legio-photo { aspect-ratio: 2 / 1; } }
-
-/* Profil Gereja: lebar carousel dihitung dari tinggi layar (22rem = navbar + judul + dots + jarak) */
-.parish .profil-carousel-wrapper { width: min(100%, max(24rem, calc((100svh - 22rem) * 16 / 9))); max-width: 62rem; }
-.parish .profil-stage-large { min-height: 0; }
-
-/* Dokumentasi: dikembalikan ke ukuran semula (tidak ikut dikecilkan) */
-.parish .docs { min-height: 0; display: block; padding: clamp(4.5rem, 9vw, 8rem) 0; }
-.parish .docs .h-display { font-size: clamp(2.6rem, 4.8vw, 4rem); }
-.parish .docs .sec-head.center { margin-bottom: 3.5rem; }
-.parish .docs .sec-head h2::after { margin-top: 1.25rem; }
-
 /* =========================================================
    LAIN-LAIN
    ========================================================= */
@@ -452,6 +481,8 @@
     .parish .hero-slide, .parish .stage-slide, .parish .stage-slide img, .parish .profil-slide { transition: none; }
     .parish.js-on .reveal { opacity: 1; transform: none; transition: none; }
     .parish .legio-card, .parish .legio-photo img, .parish .btn-gold, .parish .btn-ghost { transition: none; }
+    .parish .scroll-cue { animation: none; }
+    .parish .orb, .parish .bg-rosary, .parish .bg-rays { animation: none; }
     .parish .bar { display: none; }
 }
 </style>
@@ -460,7 +491,7 @@
 <script>document.currentScript.parentNode.classList.add('js-on');</script>
 
     <!-- HERO SECTION -->
-    <section id="hero" class="hero" data-slider data-interval="6500" aria-roledescription="carousel" aria-label="Foto kegiatan paroki">
+    <section id="hero" class="hero" data-hero data-slider data-interval="6500" aria-roledescription="carousel" aria-label="Foto kegiatan paroki">
         @foreach($heroSlides as $i => $slide)
             <div class="hero-slide {{ $i === 0 ? 'is-active' : '' }}" data-slide
                  data-title="{{ $slide['title'] }}"
@@ -494,6 +525,13 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
             </button>
         </div>
+
+        <a href="#about" class="scroll-cue" aria-label="Lanjut ke bagian Tentang Kami">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+        </a>
+
         <div class="bar"><i data-bar></i></div>
     </section>
 
@@ -510,7 +548,7 @@
                         <span class="eyebrow">Mengenal Kami</span>
                         <h2 class="h-display">Tentang Kami</h2>
                     </div>
-                    <div class="rich" style="max-width: 40rem;">
+                    <div class="rich">
                         {!! $settings['about_us'] ?? '<p>Informasi tentang kami belum diisi oleh admin.</p>' !!}
                     </div>
                 </div>
@@ -526,7 +564,7 @@
                 <h2 class="h-display">Visi &amp; Misi</h2>
             </div>
 
-            <div class="rich rich-dark reveal" style="max-width: 46rem; margin-top: 2.5rem; position: relative; z-index: 1; --d: .12s;">
+            <div class="rich rich-dark reveal" style="margin-top: 2.5rem; position: relative; z-index: 1; --d: .12s;">
                 {!! $settings['visi_misi'] ?? '<p>Visi & Misi belum diisi oleh admin.</p>' !!}
             </div>
         </div>
@@ -581,7 +619,6 @@
     <!-- PROFIL GEREJA (CAROUSEL AUTOMATIC) -->
     <section id="profile" class="sect profil deco-sect">
         <div class="bg-deco" aria-hidden="true">
-            <div class="bg-dots"></div>
             <div class="bg-rays"></div>
             <div class="orb gold o3"></div>
             <div class="orb navy o4"></div>
@@ -645,7 +682,12 @@
                 <ul class="jadwal-list reveal" style="--d: .12s;">
                     @foreach($jadwalMisa as $misa)
                         <li class="jadwal-row" data-days="{{ implode(',', $misa['days']) }}">
-                            <span class="jadwal-day">{{ $misa['label'] }}<span class="today-tag">Hari ini</span></span>
+                            <span class="jadwal-day">
+                                {{ $misa['label'] }}<span class="today-tag">Hari ini</span>
+                                @if (!empty($misa['note']))
+                                    <small class="jadwal-sub">{{ $misa['note'] }}</small>
+                                @endif
+                            </span>
                             <span class="jadwal-time">{{ $misa['time'] }}</span>
                         </li>
                     @endforeach
