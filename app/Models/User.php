@@ -59,6 +59,11 @@ class User extends Authenticatable
         return $this->role === self::ROLE_ADMIN;
     }
 
+    public function isMember(): bool
+    {
+        return $this->role === 'member';
+    }
+
     /** Kegiatan yang di-"join" oleh anggota ini. */
     public function kegiatans(): BelongsToMany
     {
