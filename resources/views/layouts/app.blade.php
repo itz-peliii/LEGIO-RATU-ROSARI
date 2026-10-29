@@ -103,16 +103,16 @@
          :class="solid || open ? 'is-solid' : 'is-ghost'"
          class="site-nav is-solid border-b fixed w-full top-0 z-50">
         <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
-            <div class="flex justify-between h-20 items-center">
+            <div class="flex justify-between h-20 items-center gap-6">
 
                 <!-- Logo / Brand -->
-                <a href="#hero" class="flex items-center gap-3">
+                <a href="#hero" class="flex items-center gap-3 flex-none">
                     <img src="{{ asset('assets/images/logo.jpg') }}" alt="Santo Petrus Logo" class="w-10 h-10 rounded-full object-cover shadow-sm">
-                    <span class="brand-name text-xl md:text-2xl">Paroki Santo Petrus Tuban</span>
+                    <span class="brand-name text-lg lg:text-xl xl:text-2xl whitespace-nowrap">Paroki Santo Petrus Tuban</span>
                 </a>
 
                 <!-- Desktop Navigation Links -->
-                <div class="hidden md:flex items-center space-x-8 font-semibold text-sm">
+                <div class="hidden lg:flex items-center gap-x-5 xl:gap-x-8 font-semibold text-sm whitespace-nowrap">
                     <a href="#hero" class="nav-link" data-spy>Beranda</a>
                     <a href="#about" class="nav-link" data-spy>Tentang Kami</a>
                     <a href="#vision-mission" class="nav-link" data-spy>Visi &amp; Misi</a>
@@ -130,7 +130,7 @@
                 </div>
 
                 <!-- Hamburger Button (Mobile Only) -->
-                <div class="md:hidden flex items-center">
+                <div class="lg:hidden flex items-center">
                     <button @click="open = !open" type="button" class="burger focus:outline-none p-2 rounded-lg hover:bg-slate-100/60 transition" aria-label="Menu">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path x-show="!open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -151,7 +151,7 @@
             x-transition:leave-end="opacity-0 -translate-y-4"
             x-cloak
             @click.away="open = false"
-            class="md:hidden bg-white border-b border-slate-200 shadow-xl px-4 pt-2 pb-6 space-y-1">
+            class="lg:hidden bg-white border-b border-slate-200 shadow-xl px-4 pt-2 pb-6 space-y-1">
 
             <a @click="open = false" href="#hero" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:text-[#b98a3e] hover:bg-amber-50 transition">Beranda</a>
             <a @click="open = false" href="#about" class="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-700 hover:text-[#b98a3e] hover:bg-amber-50 transition">Tentang Kami</a>

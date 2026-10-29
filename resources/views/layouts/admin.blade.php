@@ -14,6 +14,17 @@
     </style>
 </head>
 <body class="bg-gray-100 font-sans antialiased">
+@php
+    // Jumlah renungan yang menunggu persetujuan, untuk lencana di sidebar.
+    $renunganMenunggu = \App\Models\Renungan::where('status', 'pending')->count();
+
+    $judulHalaman = match (true) {
+        request()->routeIs('admin.preview')     => 'Preview Website',
+        request()->routeIs('admin.renungan.*')  => 'Moderasi Renungan',
+        default                                 => 'Edit Konten Website',
+    };
+@endphp
+
     <div class="min-h-screen flex">
         
         <!-- SIDEBAR -->
@@ -34,7 +45,22 @@
                     Edit Website
                 </a>
 
-                <!-- Menu 2: Lihat Website (Preview) -->
+                <!-- Menu 2: Moderasi Renungan -->
+                <a href="{{ route('admin.renungan.index') }}" 
+                   class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition {{ request()->routeIs('admin.renungan.*') ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                    <svg class="w-5 h-5 flex-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                    </svg>
+                    <span class="flex-1">Moderasi Renungan</span>
+                    @if ($renunganMenunggu > 0)
+                        <span class="flex-none text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-400 text-slate-900">
+                            {{ $renunganMenunggu }}
+                        </span>
+                    @endif
+                </a>
+
+                <!-- Menu 3: Lihat Website (Preview) -->
                 <a href="{{ route('admin.preview') }}" 
                    class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition {{ request()->routeIs('admin.preview') ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -53,9 +79,7 @@
             <!-- Top Navbar Header -->
             <header class="bg-white border-b border-gray-200 px-8 py-4 flex justify-between items-center flex-shrink-0">
                 <div class="flex items-center gap-4">
-                    <h2 class="text-lg font-semibold text-gray-800">
-                        {{ request()->routeIs('admin.preview') ? 'Preview Website' : 'Edit Konten Website' }}
-                    </h2>
+                    <h2 class="text-lg font-semibold text-gray-800">{{ $judulHalaman }}</h2>
                     
                     <!-- Tombol Buka Website Publik di Tab Baru -->
                     <a href="{{ route('home') }}" target="_blank" 
