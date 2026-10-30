@@ -15,6 +15,9 @@ return new class extends Migration
             $table->date('written_on');
             $table->text('content');
             $table->timestamps();
+            $table->string('status')->default('pending');
+            $table->timestamp('hidden_at')->nullable();
+            $table->timestamp('expires_at')->nullable();
         });
     }
 

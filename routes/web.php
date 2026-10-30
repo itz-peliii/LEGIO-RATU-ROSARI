@@ -10,6 +10,8 @@ use App\Http\Controllers\Member\AbsensiController;
 use App\Http\Controllers\Member\KegiatanController;
 use App\Http\Controllers\Member\RenunganController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\BacaanController as AdminBacaanController;
+use App\Http\Controllers\Member\BacaanController as MemberBacaanController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -35,6 +37,9 @@ Route::middleware(['auth'])->prefix('member')->as('member.')->group(function () 
     Route::get('/renungan/komunitas', [RenunganController::class, 'komunitas'])->name('renungan.komunitas');
     Route::put('/renungan/{renungan}', [RenunganController::class, 'update'])->name('renungan.update');
     Route::delete('/renungan/{renungan}', [RenunganController::class, 'destroy'])->name('renungan.destroy');
+
+    Route::get('/bacaan', [MemberBacaanController::class, 'index'])->name('bacaan');
+
 });
 
 // ===== AREA ADMIN (hanya role admin) =====
@@ -62,6 +67,15 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->as('admin.')->group(funct
     Route::post('/renungan/{renungan}/hide', [AdminRenunganController::class, 'hide'])->name('renungan.hide');
     Route::post('/renungan/{renungan}/unhide', [AdminRenunganController::class, 'unhide'])->name('renungan.unhide');
     Route::post('/renungan/{renungan}/extend', [AdminRenunganController::class, 'extend'])->name('renungan.extend');
+
+    // Halaman kelola Bacaan Mingguan
+    // Halaman kelola Bacaan Mingguan
+    Route::get('/bacaan', [AdminBacaanController::class, 'index'])->name('bacaan.index');
+    Route::post('/bacaan', [AdminBacaanController::class, 'store'])->name('bacaan.store');
+    Route::put('/bacaan/{reading}', [AdminBacaanController::class, 'update'])->name('bacaan.update');
+    Route::delete('/bacaan/{reading}', [AdminBacaanController::class, 'destroy'])->name('bacaan.destroy');
+    Route::post('/bacaan/{reading}/override', [AdminBacaanController::class, 'storeOverride'])->name('bacaan.override.store');
+    Route::delete('/bacaan/override/{override}', [AdminBacaanController::class, 'destroyOverride'])->name('bacaan.override.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

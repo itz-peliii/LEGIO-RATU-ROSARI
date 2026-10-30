@@ -65,6 +65,7 @@
     $menu = [
         ['route' => 'member.absensi',            'label' => 'Absensi'],
         ['route' => 'member.jadwal',             'label' => 'Jadwal Kegiatan'],
+        ['route' => 'member.bacaan',             'label' => 'Bacaan Mingguan'],
         ['route' => 'member.renungan',           'label' => 'Renungan Saya'],
         ['route' => 'member.renungan.komunitas', 'label' => 'Renungan Anggota'],
     ];
