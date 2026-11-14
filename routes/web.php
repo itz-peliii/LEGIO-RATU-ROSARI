@@ -52,6 +52,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->as('admin.')->group(funct
     Route::get('/preview', [DashboardController::class, 'preview'])->name('preview');
 
     // Action Documentation
+    Route::put('/documentations/reorder', [DocumentationController::class, 'reorder'])
+        ->name('documentations.reorder');
     Route::post('/documentations', [DocumentationController::class, 'store'])->name('documentations.store');
     Route::delete('/documentations/{documentation}', [DocumentationController::class, 'destroy'])->name('documentations.destroy');
 

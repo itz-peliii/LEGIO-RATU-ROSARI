@@ -16,7 +16,7 @@ class HomeController extends Controller
         $settings = Setting::pluck('value', 'key')->all();
         
         // Ambil daftar foto dokumentasi terbaru
-        $documentations = Documentation::latest()->get();
+        $documentations = Documentation::ordered()->take(Documentation::MAX)->get();
 
         // Ambil daftar legio (terurut)
         $legios = Legio::orderBy('sort_order')->orderBy('id')->get();

@@ -17,7 +17,7 @@ class DashboardController extends Controller
         $settings = Setting::pluck('value', 'key')->all();
         
         // Ambil seluruh dokumentasi terurut
-        $documentations = Documentation::orderBy('sort_order', 'asc')->latest()->get();
+        $documentations = Documentation::ordered()->get();
 
         // Ambil seluruh legio terurut
         $legios = Legio::orderBy('sort_order')->orderBy('id')->get();

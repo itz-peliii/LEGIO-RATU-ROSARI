@@ -3,8 +3,9 @@
 @section('content')
 
 @php
-    // Tab aktif awal: kalau ada error validasi legio, langsung buka tab Legio.
-    $activeTab = $errors->legio->any() ? 'legio' : 'konten';
+    $activeTab = session('active_tab')
+        ?? ($errors->legio->any() ? 'legio'
+            : ($errors->hasAny(['image', 'title', 'order']) ? 'dok' : 'konten'));
 @endphp
 
 <style>
@@ -41,7 +42,7 @@
 }
 .admin-ui .page-head .eyebrow::before{ content:''; width:1.5rem; height:1px; background:currentColor; }
 .admin-ui .page-head h1{ font-family:var(--display); font-weight:700; color:var(--ink); font-size:clamp(1.9rem,3vw,2.5rem); line-height:1.05; }
-.admin-ui .page-head p{ color:var(--muted); margin-top:.7rem; font-size:.95rem; max-width:42rem; }
+.admin-ui .page-head p{ color:var(--muted); margin-top:.7rem; font-size:.95rem; max-width:100%; }
 
 /* ---------- Tabs ---------- */
 .admin-ui .tabs{
@@ -144,7 +145,7 @@
 .admin-ui .panel-head .emblem{ flex:none; width:2.3rem; height:2.3rem; border-radius:50%; display:grid; place-items:center; color:var(--gold); background:var(--gold-bg); border:1px solid var(--gold-soft); box-shadow:0 0 0 4px rgba(230,207,155,.18); }
 .admin-ui .panel-head .emblem svg{ width:1rem; }
 .admin-ui .panel-head h2{ font-family:var(--display); font-weight:700; color:var(--ink); font-size:1.75rem; }
-.admin-ui .panel-note{ color:var(--muted); font-size:.88rem; margin:0 0 1.75rem; max-width:44rem; }
+.admin-ui .panel-note{ color:var(--muted); font-size:.88rem; margin:0 0 1.75rem; max-width:100%; }
 
 /* ---------- Legio Maria ---------- */
 .admin-ui .legio-panel{ position:relative; border:1px solid var(--line); border-radius:var(--r); background:linear-gradient(180deg,#fff,var(--paper)); box-shadow:var(--shadow); padding:1.7rem 1.8rem; margin-bottom:1.75rem; overflow:hidden; }
@@ -206,7 +207,7 @@
         <button type="button" class="tab" data-tab="dok" role="tab">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l1.5-2h7L18 7h2a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.2"/></svg>
             Dokumentasi
-            <span class="tab-count">{{ $documentations->count() }}</span>
+            <span class="tab-count">{{ $documentations->count() }}/10</span>    
         </button>
     </div>
 
@@ -458,51 +459,7 @@
         </div>
     </section>
 
-    {{-- ========================================================= --}}
-    {{-- TAB 3 — FOTO DOKUMENTASI                                  --}}
-    {{-- ========================================================= --}}
-    <section class="tab-panel" id="panel-dok">
-        <div class="panel-head">
-            <span class="emblem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l1.5-2h7L18 7h2a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.2"/></svg></span>
-            <h2>Foto Dokumentasi</h2>
-        </div>
-        <p class="panel-note">Foto terbaru otomatis menjadi slide pada section <b>Hero</b> dan <b>Galeri</b> di website.</p>
-
-        <form action="{{ route('admin.documentations.store') }}" method="POST" enctype="multipart/form-data" class="upload-row">
-            @csrf
-            <input type="text" name="title" placeholder="Judul foto (opsional)" class="inp">
-            <input type="file" name="image" required accept="image/*">
-            <button type="submit" class="btn btn-navy btn-sm" style="margin-left:auto;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></svg>
-                Upload Foto
-            </button>
-        </form>
-
-        @if($documentations->isEmpty())
-            <div class="empty">Belum ada foto dokumentasi yang diunggah.</div>
-        @else
-            <div class="gallery">
-                @foreach($documentations as $doc)
-                    <div class="photo">
-                        <form action="{{ route('admin.documentations.destroy', $doc->id) }}" method="POST"
-                              onsubmit="return confirm('Hapus foto ini?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="del" aria-label="Hapus foto">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-                            </button>
-                        </form>
-                        <div class="thumb">
-                            <img src="{{ asset('storage/' . $doc->image_path) }}" alt="{{ $doc->title }}">
-                        </div>
-                        <div class="cap">
-                            <span>{{ $doc->title ?? 'Tanpa Judul' }}</span>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        @endif
-    </section>
+    @include('admin.documentation')
 
 </div>
 
