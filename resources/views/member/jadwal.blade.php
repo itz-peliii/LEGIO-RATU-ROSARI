@@ -74,7 +74,7 @@
         <div>
             <label for="lokasi" class="{{ $kelasLabel }}">Tempat</label>
             <div class="relative">
-                <select id="lokasi" name="lokasi" onchange="this.form.submit()" class="appearance-none pr-11 cursor-pointer {{ $kelasInput }}">
+                <select id="lokasi" name="lokasi" onchange="this.form.submit()" class="appearance-none bg-none pr-11 cursor-pointer {{ $kelasInput }}">
                     <option value="">Semua tempat</option>
                     @foreach ($daftarLokasi as $l)
                         <option value="{{ $l }}" @selected($lokasi === $l)>{{ $l }}</option>
@@ -87,7 +87,7 @@
         <div>
             <label for="status" class="{{ $kelasLabel }}">Keikutsertaan</label>
             <div class="relative">
-                <select id="status" name="status" onchange="this.form.submit()" class="appearance-none pr-11 cursor-pointer {{ $kelasInput }}">
+                <select id="status" name="status" onchange="this.form.submit()" class="appearance-none bg-none pr-11 cursor-pointer {{ $kelasInput }}">
                     <option value="semua" @selected($status === 'semua')>Semua kegiatan</option>
                     <option value="sudah" @selected($status === 'sudah')>Sudah saya ikuti</option>
                     <option value="belum" @selected($status === 'belum')>Belum saya ikuti</option>
@@ -99,7 +99,7 @@
         <div>
             <label for="urut" class="{{ $kelasLabel }}">Urutkan</label>
             <div class="relative">
-                <select id="urut" name="urut" onchange="this.form.submit()" class="appearance-none pr-11 cursor-pointer {{ $kelasInput }}">
+                <select id="urut" name="urut" onchange="this.form.submit()" class="appearance-none bg-none pr-11 cursor-pointer {{ $kelasInput }}">
                     <option value="terdekat" @selected($urut === 'terdekat')>Tanggal terdekat</option>
                     <option value="terjauh" @selected($urut === 'terjauh')>Tanggal terjauh</option>
                     <option value="judul" @selected($urut === 'judul')>Nama kegiatan (A–Z)</option>

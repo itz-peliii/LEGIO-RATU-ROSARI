@@ -104,7 +104,7 @@
 <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
     <div>
         <h1 class="serif text-3xl font-bold text-[#16233f]">Absensi Kegiatan Legio</h1>
-        <p class="text-sm text-slate-500 mt-1">Rekap kehadiranmu per bulan.</p>
+        <p class="text-sm text-slate-500 mt-1">Rekap kehadiranmu per bulan, berdasarkan kegiatan yang kamu daftari lewat menu Jadwal.</p>
     </div>
 
     <form method="GET" action="{{ route('member.absensi') }}" class="flex items-end gap-2">
@@ -115,7 +115,7 @@
                  tidak menimpa angkanya --}}
             <div class="relative">
                 <select id="tahun" name="tahun" onchange="this.form.submit()"
-                        class="appearance-none w-full pl-4 pr-11 py-2.5 border border-slate-300 rounded-lg text-sm font-semibold text-[#16233f] bg-white cursor-pointer hover:border-[#b98a3e] focus:outline-none focus:ring-2 focus:ring-[#e6cf9b] focus:border-[#b98a3e] transition">
+                        class="appearance-none bg-none w-full pl-4 pr-11 py-2.5 border border-slate-300 rounded-lg text-sm font-semibold text-[#16233f] bg-white cursor-pointer hover:border-[#b98a3e] focus:outline-none focus:ring-2 focus:ring-[#e6cf9b] focus:border-[#b98a3e] transition">
                     @foreach ($years->reverse() as $y)
                         <option value="{{ $y }}" @selected($y === $year)>{{ $y }}</option>
                     @endforeach
@@ -162,7 +162,7 @@
             <p class="serif text-2xl font-bold text-[#16233f] mt-1 leading-tight">{{ $labelCakupan }}</p>
             <p class="text-sm text-slate-500 mt-2">
                 @if ($dinilai > 0)
-                    Hadir {{ $hadir }} dari {{ $dinilai }} kegiatan yang kamu ikuti.
+                    Kamu hadir di {{ $hadir }} dari {{ $dinilai }} kegiatan yang sudah kamu daftari dan sudah berlangsung.
                 @else
                     Belum ada kegiatan yang tercatat.
                 @endif
@@ -174,19 +174,19 @@
     <div class="bg-white rounded-2xl border border-slate-200 border-l-4 border-l-emerald-500 p-5 flex flex-col justify-center">
         <p class="text-[11px] font-bold uppercase tracking-[.16em] text-slate-500">Hadir</p>
         <p class="serif text-5xl font-bold text-emerald-600 mt-1 leading-none">{{ $hadir }}</p>
-        <p class="text-xs text-slate-400 mt-3 leading-relaxed">Kegiatan yang kamu hadiri.</p>
+        <p class="text-xs text-slate-400 mt-3 leading-relaxed">Telah <em><b>daftar</b></em> dan <em><b>datang</b></em> ke kegiatan.</p>
     </div>
 
     <div class="bg-white rounded-2xl border border-slate-200 border-l-4 border-l-rose-500 p-5 flex flex-col justify-center">
         <p class="text-[11px] font-bold uppercase tracking-[.16em] text-slate-500">Tidak hadir</p>
         <p class="serif text-5xl font-bold text-rose-600 mt-1 leading-none">{{ $tidakHadir }}</p>
-        <p class="text-xs text-slate-400 mt-3 leading-relaxed">Sudah terdaftar, tapi tidak hadir.</p>
+        <p class="text-xs text-slate-400 mt-3 leading-relaxed">Telah <em><b>daftar</b></em>, tetapi <em><b>tidak datang</b></em>.</p>
     </div>
 
     <div class="bg-white rounded-2xl border border-slate-200 border-l-4 border-l-slate-300 p-5 flex flex-col justify-center">
-        <p class="text-[11px] font-bold uppercase tracking-[.16em] text-slate-500">Tidak diikuti</p>
+        <p class="text-[11px] font-bold uppercase tracking-[.16em] text-slate-500">Tidak daftar</p>
         <p class="serif text-5xl font-bold text-slate-400 mt-1 leading-none">{{ $lain }}</p>
-        <p class="text-xs text-slate-400 mt-3 leading-relaxed">Tidak kamu daftari, atau belum berlangsung.</p>
+        <p class="text-xs text-slate-400 mt-3 leading-relaxed"><em><b>Tidak daftar</b></em> atau <em><b>Kegiatan Belum Selesai</b></em>.</p>
     </div>
 </div>
 
@@ -220,7 +220,7 @@
                                 ]);
                     $judul    = $data['future']
                                 ? $namaBulanPanjang[$m - 1].' '.$year.' — belum terjadi'
-                                : $namaBulanPanjang[$m - 1].' '.$year.' — hadir '.$data['hadir'].', tidak hadir '.$data['tidak_hadir'].', tidak diikuti '.$data['lain'];
+                                : $namaBulanPanjang[$m - 1].' '.$year.' — hadir '.$data['hadir'].', tidak hadir '.$data['tidak_hadir'].', tidak daftar / belum berlangsung '.$data['lain'];
                 @endphp
 
                 <div class="flex-1 flex flex-col items-center h-full">

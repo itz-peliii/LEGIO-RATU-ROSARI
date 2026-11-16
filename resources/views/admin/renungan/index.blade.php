@@ -65,8 +65,8 @@
 .admin-ui .rsub{ font-size:.77rem; color:var(--muted); margin-top:.12rem; }
 .admin-ui .rbadge{ flex:none; font-size:.68rem; font-weight:800; padding:.28rem .75rem; border-radius:999px; letter-spacing:.02em; }
 .admin-ui .rbody{ padding:1.3rem 1.5rem; }
-.admin-ui .rbody .content{ font-size:.92rem; color:#394257; line-height:1.72; white-space:pre-line; }
-.admin-ui .reject-note{ margin-top:1rem; padding:.8rem 1rem; background:var(--danger-bg); border-left:4px solid var(--danger); color:#8e2a20; font-size:.8rem; border-radius:8px; }
+.admin-ui .rbody .content{ font-size:.92rem; color:#394257; line-height:1.72; white-space:pre-line; overflow-wrap:anywhere;}
+.admin-ui .reject-note{ margin-top:1rem; padding:.8rem 1rem; background:var(--danger-bg); border-left:4px solid var(--danger); color:#8e2a20; font-size:.8rem; border-radius:8px; overflow-wrap:anywhere;}
 .admin-ui .reject-note b{ font-weight:800; }
 
 /* ----- Jejak waktu ----- */

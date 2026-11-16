@@ -14,10 +14,27 @@ return new class extends Migration
             $table->string('name');
             $table->date('written_on');
             $table->text('content');
-            $table->timestamps();
+
+            // draft | pending | approved | rejected
             $table->string('status')->default('pending');
-            $table->timestamp('hidden_at')->nullable();
+
+            $table->timestamp('last_edited_at')->nullable();
+
+            // persetujuan admin
+            $table->timestamp('approved_at')->nullable();
+            $table->foreignId('approved_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->timestamp('rejected_at')->nullable();
+            $table->text('reject_reason')->nullable();
+
+            // masa tampil untuk anggota lain
+            $table->unsignedInteger('display_days')->nullable();
             $table->timestamp('expires_at')->nullable();
+
+            // disembunyikan admin
+            $table->timestamp('hidden_at')->nullable();
+            $table->foreignId('hidden_by')->nullable()->constrained('users')->nullOnDelete();
+
+            $table->timestamps();
         });
     }
 

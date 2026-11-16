@@ -21,7 +21,7 @@ class RenunganController extends Controller
                                 ->whereNotNull('expires_at')
                                 ->where('expires_at', '<=', now()),
             'rejected' => $query->where('status', 'rejected'),
-            'semua'    => $query,
+            'semua'    => $query->where('status', '!=', 'draft'),
             default    => $query->where('status', 'pending'),
         };
 
@@ -37,12 +37,14 @@ class RenunganController extends Controller
 
     public function approve(Request $request, Renungan $renungan)
     {
+        abort_if($renungan->status === 'draft', 404);
+
         $data = $request->validate([
             // kosong = tampil sampai admin memutuskan untuk menyembunyikan
             'display_days' => ['nullable', 'integer', 'min:1', 'max:365'],
         ]);
 
-        $days = $data['display_days'] ?? null;
+        $days = isset($data['display_days']) ? (int) $data['display_days'] : null;
 
         $renungan->update([
             'status'        => 'approved',
@@ -61,6 +63,8 @@ class RenunganController extends Controller
 
     public function reject(Request $request, Renungan $renungan)
     {
+        abort_if($renungan->status === 'draft', 404);
+
         $data = $request->validate([
             'reject_reason' => ['nullable', 'string', 'max:255'],
         ]);
@@ -105,7 +109,7 @@ class RenunganController extends Controller
             'display_days' => ['nullable', 'integer', 'min:1', 'max:365'],
         ]);
 
-        $days = $data['display_days'] ?? null;
+        $days = isset($data['display_days']) ? (int) $data['display_days'] : null;
 
         $renungan->update([
             'display_days' => $days,
