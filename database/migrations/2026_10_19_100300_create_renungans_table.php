@@ -12,10 +12,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('name');
+            $table->string('title')->nullable(); // <-- Tambahan
             $table->date('written_on');
+            $table->unsignedInteger('week_number')->nullable(); // <-- Tambahan
             $table->text('content');
             $table->timestamps();
-            $table->string('status')->default('pending');
+            $table->string('status')->default('draft'); // <-- Ubah ke 'draft'
             $table->timestamp('hidden_at')->nullable();
             $table->timestamp('expires_at')->nullable();
         });

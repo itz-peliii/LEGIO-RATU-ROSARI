@@ -47,27 +47,42 @@
 .admin-ui .dtab.active{ color:var(--ink); }
 .admin-ui .dtab.active::after{ content:''; position:absolute; left:.8rem; right:.8rem; bottom:-1px; height:3px; border-radius:3px 3px 0 0; background:linear-gradient(90deg,var(--gold),var(--gold-soft)); }
 
-.admin-ui .lead{ color:var(--muted); font-size:.9rem; margin:-.5rem 0 1.5rem; max-width:46rem; }
+.admin-ui .lead{ color:var(--muted); font-size:.9rem; margin:-.5rem 0 1.5rem; max-width:100%; }
 
 /* ----- Filter status (pill) ----- */
-.admin-ui .filters{ display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:1.75rem; }
+.admin-ui .filters{ display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:1.25rem; }
 .admin-ui .filter{ font-family:var(--body); font-size:.8rem; font-weight:700; padding:.5rem .95rem; border-radius:999px; text-decoration:none; border:1px solid var(--line-strong); background:#fff; color:var(--muted); transition:border-color .2s, color .2s, background .2s; }
 .admin-ui .filter:hover{ border-color:var(--gold); color:var(--ink); }
 .admin-ui .filter.active{ background:var(--ink); color:#fff; border-color:var(--ink); }
 .admin-ui .filter .num{ opacity:.6; margin-left:.2rem; }
 .admin-ui .filter.active .num{ color:var(--gold-soft); opacity:1; }
 
+/* ----- Search & Filter Bar ----- */
+.admin-ui .search-bar{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(11rem, 1fr));
+    gap:.85rem; align-items:end; background:#fff; padding:1rem 1.25rem;
+    border:1px solid var(--line); border-radius:14px; margin-bottom:1.75rem;
+    box-shadow:var(--shadow);
+}
+.admin-ui .search-bar .small-label{ display:block; font-size:.72rem; font-weight:800; color:var(--ink-soft); margin-bottom:.4rem; }
+
 /* ----- Kartu renungan ----- */
 .admin-ui .rcard{ position:relative; background:#fff; border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow); overflow:hidden; margin-bottom:1.5rem; }
 .admin-ui .rcard::before{ content:''; position:absolute; left:0; right:0; top:0; height:3px; background:linear-gradient(90deg,var(--gold),var(--gold-soft)); z-index:1; }
 .admin-ui .rcard-head{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:.75rem; padding:1.15rem 1.5rem; border-bottom:1px solid var(--line); }
-.admin-ui .rname{ font-weight:800; color:var(--ink); }
-.admin-ui .rsub{ font-size:.77rem; color:var(--muted); margin-top:.12rem; }
+.admin-ui .rtitle{ font-family:var(--display); font-weight:700; font-size:1.3rem; color:var(--ink); line-height:1.15; }
+.admin-ui .rname{ font-weight:700; color:var(--ink-soft); font-size:.84rem; margin-top:.15rem; }
+.admin-ui .rsub{ font-size:.77rem; color:var(--muted); margin-top:.1rem; }
 .admin-ui .rbadge{ flex:none; font-size:.68rem; font-weight:800; padding:.28rem .75rem; border-radius:999px; letter-spacing:.02em; }
 .admin-ui .rbody{ padding:1.3rem 1.5rem; }
+.admin-ui .rbody.is-editing{ background:var(--paper); }
 .admin-ui .rbody .content{ font-size:.92rem; color:#394257; line-height:1.72; white-space:pre-line; }
 .admin-ui .reject-note{ margin-top:1rem; padding:.8rem 1rem; background:var(--danger-bg); border-left:4px solid var(--danger); color:#8e2a20; font-size:.8rem; border-radius:8px; }
 .admin-ui .reject-note b{ font-weight:800; }
+
+/* ----- Form Edit Admin ----- */
+.admin-ui .edit-grid{ display:grid; grid-template-columns:1fr; gap:.85rem; margin-bottom:.85rem; }
+@media(min-width:640px){ .admin-ui .edit-grid{ grid-template-columns:1fr 1fr; } }
 
 /* ----- Jejak waktu ----- */
 .admin-ui .rtrace{ padding:1rem 1.5rem; border-top:1px solid var(--line); background:var(--paper); display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
@@ -78,7 +93,7 @@
 
 /* ----- Aksi ----- */
 .admin-ui .ractions{ padding:1.2rem 1.5rem; border-top:1px solid var(--line); display:flex; flex-wrap:wrap; align-items:flex-end; gap:1rem 1.5rem; }
-.admin-ui .ractions .small-label{ display:block; font-size:.72rem; font-weight:800; color:var(--ink-soft); margin-bottom:.4rem; }
+.admin-ui .ractions .small-label, .admin-ui .rbody .small-label{ display:block; font-size:.72rem; font-weight:800; color:var(--ink-soft); margin-bottom:.4rem; }
 .admin-ui .inp{ width:100%; font-family:var(--body); font-size:.9rem; color:var(--text); background:#fff; border:1px solid var(--line-strong); border-radius:10px; padding:.55rem .8rem; transition:border-color .2s, box-shadow .2s; }
 .admin-ui .inp:focus{ outline:none; border-color:var(--gold); box-shadow:0 0 0 3px rgba(185,138,62,.16); }
 .admin-ui .inp.w-days{ width:11rem; } .admin-ui .inp.w-reason{ width:15rem; }
@@ -89,6 +104,10 @@
 .admin-ui .btn:hover{ transform:translateY(-1px); }
 .admin-ui .btn-ok{ color:#fff; background:linear-gradient(135deg,#36a46f,var(--ok)); box-shadow:0 12px 24px -14px rgba(47,138,91,.9); }
 .admin-ui .btn-ok:hover{ filter:brightness(1.05); }
+.admin-ui .btn-navy{ color:#fff; background:var(--ink); }
+.admin-ui .btn-navy:hover{ background:var(--ink-soft); }
+.admin-ui .btn-ghost{ color:var(--text); background:#fff; border-color:var(--line-strong); }
+.admin-ui .btn-ghost:hover{ border-color:var(--gold); color:var(--ink); }
 .admin-ui .btn-outline-danger{ color:var(--danger); background:#fff; border-color:#f0c7c2; }
 .admin-ui .btn-outline-danger:hover{ background:var(--danger-bg); border-color:var(--danger); }
 .admin-ui .link-amber{ background:none; border:0; cursor:pointer; font-family:var(--body); font-weight:700; font-size:.82rem; color:#9a6b00; padding-bottom:.65rem; }
@@ -107,7 +126,7 @@
 
     <header class="page-head">
         <span class="eyebrow">Panel Administrasi</span>
-        <h1>Moderasi Renungan</h1>
+        <h1>Renungan &amp; Bacaan</h1>
     </header>
 
     {{-- ===== TAB UTAMA: Moderasi Kiriman / Bacaan Mingguan ===== --}}
@@ -124,12 +143,12 @@
         </a>
     </nav>
 
-    <p class="lead">Setujui renungan anggota dan atur berapa lama renungan itu tampil di halaman anggota lain.</p>
+    <p class="lead">Tinjau, sunting jika diperlukan, dan setujui renungan anggota agar tampil di halaman komunitas.</p>
 
     {{-- ===== FILTER STATUS ===== --}}
     <div class="filters">
         @foreach ($tabs as $key => [$label, $jumlah])
-            <a href="{{ route('admin.renungan.index', ['tab' => $key]) }}"
+            <a href="{{ route('admin.renungan.index', array_merge(request()->only(['search', 'month', 'week']), ['tab' => $key])) }}"
                class="filter {{ $tab === $key ? 'active' : '' }}">
                 {{ $label }}
                 @if ($jumlah !== null)
@@ -139,29 +158,93 @@
         @endforeach
     </div>
 
+    {{-- ===== FILTER NAMA, BULAN, MINGGU ===== --}}
+    <form method="GET" action="{{ route('admin.renungan.index') }}" class="search-bar">
+        <input type="hidden" name="tab" value="{{ $tab }}">
+        <div>
+            <label for="adm-search" class="small-label">Cari Nama / Judul</label>
+            <input id="adm-search" type="text" name="search" value="{{ request('search') }}"
+                   placeholder="Nama anggota atau judul..." class="inp">
+        </div>
+        <div>
+            <label for="adm-month" class="small-label">Bulan</label>
+            <input id="adm-month" type="month" name="month" value="{{ request('month') }}" class="inp">
+        </div>
+        <div>
+            <label for="adm-week" class="small-label">Minggu Ke-</label>
+            <input id="adm-week" type="number" name="week" min="1" value="{{ request('week') }}"
+                   placeholder="Semua minggu" class="inp">
+        </div>
+        <div style="display:flex; gap:.5rem;">
+            <button type="submit" class="btn btn-navy" style="flex:1;">Filter</button>
+            @if (request()->hasAny(['search', 'month', 'week']))
+                <a href="{{ route('admin.renungan.index', ['tab' => $tab]) }}" class="btn btn-ghost">Reset</a>
+            @endif
+        </div>
+    </form>
+
     {{-- ===== DAFTAR ===== --}}
     @forelse ($renungans as $r)
-        <div class="rcard">
+        <div class="rcard" x-data="{ editing: false }">
 
             <div class="rcard-head">
                 <div style="min-width:0;">
-                    <p class="rname" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ $r->name }}</p>
+                    <p class="rtitle">{{ $r->title ?? 'Tanpa Judul' }}</p>
+                    <p class="rname">{{ $r->name }}</p>
                     <p class="rsub" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
                         {{ $r->user?->email ?? 'akun terhapus' }}
                         &middot; {{ $r->written_on->locale('id')->translatedFormat('d F Y') }}
+                        @if ($r->week_number)
+                            &middot; Minggu ke-{{ $r->week_number }}
+                        @endif
                     </p>
                 </div>
 
-                <span class="rbadge {{ $r->statusColor() }}">{{ $r->statusLabel() }}</span>
+                <div style="display:flex; align-items:center; gap:.85rem;">
+                    <button type="button" @click="editing = !editing" class="link-navy" style="padding:0;">
+                        <span x-text="editing ? 'Batal Edit' : 'Edit Isi'"></span>
+                    </button>
+                    <span class="rbadge {{ $r->statusColor() }}">{{ $r->statusLabel() }}</span>
+                </div>
             </div>
 
-            <div class="rbody">
+            {{-- MODE BACA --}}
+            <div class="rbody" x-show="!editing">
                 <p class="content">{{ $r->content }}</p>
 
                 @if ($r->status === 'rejected' && $r->reject_reason)
                     <p class="reject-note"><b>Alasan penolakan:</b> {{ $r->reject_reason }}</p>
                 @endif
             </div>
+
+            {{-- MODE EDIT ADMIN --}}
+            <form method="POST" action="{{ route('admin.renungan.update', $r) }}"
+                  class="rbody is-editing" x-show="editing" x-cloak>
+                @csrf
+                @method('PUT')
+
+                <div class="edit-grid">
+                    <div>
+                        <label for="adm-name-{{ $r->id }}" class="small-label">Nama Penulis</label>
+                        <input id="adm-name-{{ $r->id }}" type="text" name="name" value="{{ $r->name }}" required maxlength="255" class="inp">
+                    </div>
+                    <div>
+                        <label for="adm-title-{{ $r->id }}" class="small-label">Judul Renungan</label>
+                        <input id="adm-title-{{ $r->id }}" type="text" name="title" value="{{ $r->title }}" required maxlength="255" class="inp">
+                    </div>
+                </div>
+
+                <div style="margin-bottom:.9rem;">
+                    <label for="adm-content-{{ $r->id }}" class="small-label">Isi Renungan</label>
+                    <textarea id="adm-content-{{ $r->id }}" name="content" rows="7" required maxlength="5000"
+                              class="inp" style="line-height:1.65;">{{ $r->content }}</textarea>
+                </div>
+
+                <div style="display:flex; justify-content:flex-end; gap:.6rem;">
+                    <button type="button" @click="editing = false" class="btn btn-ghost">Batal</button>
+                    <button type="submit" class="btn btn-navy">Simpan Perubahan</button>
+                </div>
+            </form>
 
             {{-- Jejak waktu --}}
             <dl class="rtrace">

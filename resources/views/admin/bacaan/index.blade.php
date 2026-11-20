@@ -37,7 +37,7 @@
 .admin-ui .dtab.active{ color:var(--ink); }
 .admin-ui .dtab.active::after{ content:''; position:absolute; left:.8rem; right:.8rem; bottom:-1px; height:3px; border-radius:3px 3px 0 0; background:linear-gradient(90deg,var(--gold),var(--gold-soft)); }
 
-.admin-ui .lead{ color:var(--muted); font-size:.9rem; margin:-.5rem 0 1.75rem; max-width:46rem; }
+.admin-ui .lead{ color:var(--muted); font-size:.9rem; margin:-.5rem 0 1.75rem; max-width:100%; }
 
 .admin-ui .card{ position:relative; background:#fff; border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow); padding:2rem 2.1rem; margin-bottom:2rem; overflow:hidden; }
 .admin-ui .card::before{ content:''; position:absolute; left:0; right:0; top:0; height:3px; background:linear-gradient(90deg,var(--gold),var(--gold-soft)); }
@@ -129,8 +129,10 @@
         </a>
     </nav>
 
-    <p class="lead">Unggah PDF buku bacaan renungan. Sistem menampilkan halaman tertentu yang berganti otomatis tiap minggu; untuk minggu tertentu kamu bisa menimpanya secara manual.</p>
-
+    <p class="lead" style="line-height: 1.6;">
+        Unggah file PDF buku pegangan atau bacaan renungan untuk dibaca umat/anggota di halaman khusus. Cukup atur tanggal mulai dan jumlah halaman yang dibaca per minggu, maka halaman bacaan akan berganti otomatis setiap minggunya. Jika pada minggu tertentu ada penyesuaian jadwal, nomor halamannya tetap bisa diubah secara manual pada daftar di bawah.
+    </p>  
+      
     @if($errors->any())
         <div class="errbox">
             @foreach($errors->all() as $err)

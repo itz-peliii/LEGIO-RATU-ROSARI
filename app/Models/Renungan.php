@@ -14,15 +14,29 @@ class Renungan extends Model
     protected $table = 'renungans';
 
     protected $fillable = [
-        'user_id', 'name', 'written_on', 'content', 'status', 'last_edited_at',
-        'approved_at', 'approved_by', 'rejected_at', 'reject_reason',
-        'hidden_at', 'hidden_by', 'expires_at', 'display_days',
+        'user_id',
+        'name',
+        'title',
+        'written_on',
+        'week_number',
+        'content',
+        'status',
+        'last_edited_at',
+        'approved_at',
+        'approved_by',
+        'rejected_at',
+        'reject_reason',
+        'hidden_at',
+        'hidden_by',
+        'expires_at',
+        'display_days',
     ];
 
     protected function casts(): array
     {
         return [
             'written_on'     => 'date',
+            'week_number'    => 'integer',
             'last_edited_at' => 'datetime',
             'approved_at'    => 'datetime',
             'rejected_at'    => 'datetime',
@@ -71,11 +85,21 @@ class Renungan extends Model
             && ! $this->isExpired();
     }
 
+    /**
+     * Member hanya bisa mengedit renungan saat masih draft
+     * atau setelah ditolak (rejected) oleh admin.
+     */
+    public function canBeEditedByMember(): bool
+    {
+        return in_array($this->status, ['draft', 'rejected'], true);
+    }
+
     public function statusLabel(): string
     {
         return match (true) {
+            $this->status === 'draft'    => 'Draft',
             $this->status === 'pending'  => 'Menunggu persetujuan',
-            $this->status === 'rejected' => 'Ditolak',
+            $this->status === 'rejected' => 'Ditolak (Perlu revisi)',
             $this->hidden_at !== null    => 'Disembunyikan admin',
             $this->isExpired()           => 'Masa tampil berakhir',
             $this->expires_at !== null   => 'Tampil s/d '.$this->expires_at->locale('id')->translatedFormat('d M Y'),
@@ -86,6 +110,7 @@ class Renungan extends Model
     public function statusColor(): string
     {
         return match (true) {
+            $this->status === 'draft'    => 'bg-slate-100 text-slate-700',
             $this->status === 'pending'  => 'bg-amber-100 text-amber-800',
             $this->status === 'rejected' => 'bg-red-100 text-red-700',
             ! $this->isVisible()         => 'bg-slate-200 text-slate-600',

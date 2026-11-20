@@ -12,7 +12,9 @@ class RenunganController extends Controller
     {
         $tab = $request->query('tab', 'pending');
 
-        $query = Renungan::with(['user', 'approver', 'hider']);
+        // Kecualikan status 'draft' agar tidak masuk daftar moderasi admin
+        $query = Renungan::with(['user', 'approver', 'hider'])
+            ->where('status', '!=', 'draft');
 
         match ($tab) {
             'tampil'   => $query->visible(),
@@ -25,6 +27,27 @@ class RenunganController extends Controller
             default    => $query->where('status', 'pending'),
         };
 
+        // Filter 1: Cari Nama Penulis atau Judul Renungan
+        if ($request->filled('search')) {
+            $s = $request->search;
+            $query->where(function ($q) use ($s) {
+                $q->where('name', 'like', "%{$s}%")
+                ->orWhere('title', 'like', "%{$s}%");
+            });
+        }
+
+        // Filter 2: Bulan (format YYYY-MM)
+        if ($request->filled('month')) {
+            [$year, $month] = explode('-', $request->month);
+            $query->whereYear('written_on', $year)
+                ->whereMonth('written_on', $month);
+        }
+
+        // Filter 3: Minggu ke-
+        if ($request->filled('week')) {
+            $query->where('week_number', $request->week);
+        }
+
         $renungans = $query->latest('created_at')->paginate(15)->withQueryString();
 
         $counts = [
@@ -35,6 +58,23 @@ class RenunganController extends Controller
         return view('admin.renungan.index', compact('renungans', 'tab', 'counts'));
     }
 
+    // Method baru: Admin mengedit isi renungan member
+    public function update(Request $request, Renungan $renungan)
+    {
+        $data = $request->validate([
+            'name'    => ['required', 'string', 'max:255'],
+            'title'   => ['required', 'string', 'max:255'],
+            'content' => ['required', 'string', 'max:5000'],
+        ]);
+
+        $renungan->update([
+            'name'    => $data['name'],
+            'title'   => $data['title'],
+            'content' => $data['content'],
+        ]);
+
+        return back()->with('success', 'Isi renungan anggota berhasil diperbarui.');
+    }
     public function approve(Request $request, Renungan $renungan)
     {
         $data = $request->validate([

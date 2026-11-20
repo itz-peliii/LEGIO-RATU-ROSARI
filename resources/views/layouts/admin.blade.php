@@ -382,10 +382,9 @@
     
     // Menentukan judul halaman berdasarkan route aktif
     $judulHalaman = match (true) {
-        request()->routeIs('admin.preview')    => 'Preview Website',
-        request()->routeIs('admin.renungan.*') => 'Moderasi Renungan',
-        request()->routeIs('admin.bacaan.*')   => 'Bacaan Mingguan',
-        default                                => 'Edit Konten Website',
+        request()->routeIs('admin.preview')                               => 'Preview Website',
+        request()->routeIs('admin.renungan.*', 'admin.bacaan.*')          => 'Renungan & Bacaan',
+        default                                                           => 'Edit Konten Website',
     };
     @endphp
 
@@ -418,30 +417,20 @@
                     <span class="label">Edit Website</span>
                 </a>
 
-                <!-- Menu 2: Moderasi Renungan -->
+                <!-- Menu 2: Moderasi Renungan (mencakup Kiriman & Bacaan Mingguan) -->
                 <a href="{{ route('admin.renungan.index') }}"
-                    class="cms-link {{ request()->routeIs('admin.renungan.*') ? 'active' : '' }}">
+                    class="cms-link {{ request()->routeIs('admin.renungan.*', 'admin.bacaan.*') ? 'active' : '' }}">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                     </svg>
-                    <span class="label">Moderasi Renungan</span>
+                    <span class="label">Renungan & Bacaan</span>
                     @if ($renunganMenunggu > 0)
                     <span class="cms-badge">{{ $renunganMenunggu }}</span>
                     @endif
                 </a>
 
-                <!-- Menu 3: Bacaan Mingguan -->
-                <a href="{{ route('admin.bacaan.index') }}"
-                    class="cms-link {{ request()->routeIs('admin.bacaan.*') ? 'active' : '' }}">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 6.5C10.8 5.7 9.2 5.3 7.5 5.3S4.2 5.7 3 6.5v13c1.2-.8 2.8-1.2 4.5-1.2s3.3.4 4.5 1.2m0-13c1.2-.8 2.8-1.2 4.5-1.2s3.3.4 4.5 1.2v13c-1.2-.8-2.8-1.2-4.5-1.2s-3.3.4-4.5 1.2m0-13v13" />
-                    </svg>
-                    <span class="label">Bacaan Mingguan</span>
-                </a>
-
-                <!-- Menu 4: Lihat Website (Preview) -->
+                <!-- Menu 3: Lihat Website (Preview) -->
                 <a href="{{ route('admin.preview') }}"
                     class="cms-link {{ request()->routeIs('admin.preview') ? 'active' : '' }}">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">

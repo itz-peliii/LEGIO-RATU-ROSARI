@@ -62,15 +62,15 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->as('admin.')->group(funct
     Route::put('/legios/{legio}', [LegioController::class, 'update'])->name('legios.update');
     Route::delete('/legios/{legio}', [LegioController::class, 'destroy'])->name('legios.destroy');
 
-    // (3) BARU — Moderasi Renungan
+    // Moderasi Renungan
     Route::get('/renungan', [AdminRenunganController::class, 'index'])->name('renungan.index');
+    Route::put('/renungan/{renungan}', [AdminRenunganController::class, 'update'])->name('renungan.update'); // <-- BARU
     Route::post('/renungan/{renungan}/approve', [AdminRenunganController::class, 'approve'])->name('renungan.approve');
     Route::post('/renungan/{renungan}/reject', [AdminRenunganController::class, 'reject'])->name('renungan.reject');
     Route::post('/renungan/{renungan}/hide', [AdminRenunganController::class, 'hide'])->name('renungan.hide');
     Route::post('/renungan/{renungan}/unhide', [AdminRenunganController::class, 'unhide'])->name('renungan.unhide');
     Route::post('/renungan/{renungan}/extend', [AdminRenunganController::class, 'extend'])->name('renungan.extend');
 
-    // Halaman kelola Bacaan Mingguan
     // Halaman kelola Bacaan Mingguan
     Route::get('/bacaan', [AdminBacaanController::class, 'index'])->name('bacaan.index');
     Route::post('/bacaan', [AdminBacaanController::class, 'store'])->name('bacaan.store');
