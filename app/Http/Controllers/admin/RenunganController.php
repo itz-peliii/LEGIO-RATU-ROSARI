@@ -82,7 +82,7 @@ class RenunganController extends Controller
             'display_days' => ['nullable', 'integer', 'min:1', 'max:365'],
         ]);
 
-        $days = $data['display_days'] ?? null;
+        $days = isset($data['display_days']) ? (int) $data['display_days'] : null;
 
         $renungan->update([
             'status'        => 'approved',
@@ -145,7 +145,7 @@ class RenunganController extends Controller
             'display_days' => ['nullable', 'integer', 'min:1', 'max:365'],
         ]);
 
-        $days = $data['display_days'] ?? null;
+        $days = isset($data['display_days']) ? (int) $data['display_days'] : null;
 
         $renungan->update([
             'display_days' => $days,

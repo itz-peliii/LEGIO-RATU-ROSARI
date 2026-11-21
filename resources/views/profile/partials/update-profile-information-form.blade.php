@@ -47,6 +47,14 @@
             @endif
         </div>
 
+        <div>
+            <x-input-label for="phone" value="Nomor WhatsApp" />
+            <x-text-input id="phone" name="phone" type="tel" class="mt-1 block w-full"
+                          :value="old('phone', $user->phone)" placeholder="08xxxxxxxxxx" autocomplete="tel" />
+            <p class="mt-1 text-xs text-slate-500">Dipakai untuk mengirim pengingat kegiatan lewat WhatsApp.</p>
+            <x-input-error class="mt-2" :messages="$errors->get('phone')" />
+        </div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 

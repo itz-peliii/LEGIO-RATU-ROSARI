@@ -23,10 +23,19 @@ class KegiatanController extends Controller
             return back()->with('error', 'Kegiatan ini sudah berlangsung, tidak bisa di-join.');
         }
 
-        // syncWithoutDetaching = aman jika tombol ditekan dua kali (tidak duplikat)
-        $kegiatan->members()->syncWithoutDetaching([$request->user()->id]);
+        $data = $request->validate([
+            'remind_days' => ['required', 'integer', 'in:1,3,7'],
+        ]);
 
-        return back()->with('success', 'Kamu berhasil join "' . $kegiatan->title . '".');
+        // syncWithoutDetaching = aman jika tombol ditekan dua kali (tidak duplikat)
+        $kegiatan->members()->syncWithoutDetaching([
+            $request->user()->id => [
+                'remind_days' => (int) $data['remind_days'],
+                'reminded_at' => null,
+            ],
+        ]);
+
+        return back()->with('success', 'Kamu berhasil join "' . $kegiatan->title . '". Pengingat WA akan dikirim H-' . $data['remind_days'] . '.');
     }
 
     public function leave(Request $request, Kegiatan $kegiatan)
